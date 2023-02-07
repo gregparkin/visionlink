@@ -1,0 +1,604 @@
+vi /**
+ * @package    CCT
+ * @file       cct.css
+ * @author     Greg Parkin <parking@us.ibm.com>
+ * @date       $Date:  $ GMT
+ * @version    $Revision:  $
+ *
+ * $Log:  $
+ *
+ *
+ * $Source:  $
+ */
+
+@charset "utf-8";
+/* CSS Document */
+.imagepreload 
+{
+	display: none;
+}
+
+div
+{
+  font-family:Arial
+}
+
+.page_set
+{
+  background-color:#634014
+}
+
+.tour
+{
+  font-family:Jokewood; font-size:24
+}
+
+.photo_text
+{
+  font-family:Arial; font-size:12
+}
+
+.a1 A:link
+{
+  text-decoration: none
+}
+
+.a1 A:active
+{
+  text-decoration: none
+}
+
+.a1 A:visited
+{
+  text-decoration: none
+}
+
+.a1 A:hover
+{
+  text-decoration: underline overline; color: red;
+}
+
+input 
+{
+  /* width: 12em; */
+  margin-right: 0.5em;
+  size:auto;
+}
+
+/* This is for the page loading screen */
+/* This is what we want the div to look like when it is not showing */
+div.loading-invisible
+{
+    /* Make invisible */
+    display:none;
+}
+
+/* This is for the page loading screen */
+/* This is what we want the div to look like when it IS showing */
+div.loading-visible {
+    /*make visible*/
+    display: block;
+
+    /* Position it 200px down the screen */
+    position: absolute;
+    top: 200px;
+    left: 0;
+    width: 100%;
+    text-align: center;
+
+    /* In supporting browsers, make it a little transparent */
+    background: #fff;
+    filter: alpha(opacity=75); /* internet explorer */
+    -khtml-opacity: 0.75; /* khtml, old safari */
+    -moz-opacity: 0.75; /* mozilla, netscape */
+    opacity: 0.75; /* fx, safari, opera */
+    border-top: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+p 
+{
+  margin: 1em 0;
+}
+
+p:first-child 
+{
+  margin-top: 0;
+}
+
+p:last-child 
+{
+  margin-bottom: 0;
+}
+
+html 
+{
+  height:100%;
+  max-height:100%;
+  padding:0;
+  margin:0;
+  border:0;
+  background:#fff;
+  font-size:80%;
+  font-family: "trebuchet ms", tahoma, verdana, arial, sans-serif;
+  /* hide overflow:hidden from IE5/Mac */
+  overflow: hidden;
+}
+
+body 
+{
+  height:94%;
+  max-height:94%;
+  overflow:hidden;
+  padding:0;
+  margin:0;
+  border:0;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  scrollbar-3dlight-color: #4FBDDD;
+  scrollbar-arrow-color: #EEE1AE;
+  scrollbar-darkshadow-color: #000000;
+  scrollbar-face-color: #A0CCE0;
+  scrollbar-highlight-color: #F8F2DC;
+  scrollbar-shadow-color: #176F99;
+  scrollbar-track-color: #E7F2FA;
+}
+
+a 
+{
+  color:#333;
+}
+
+#head 
+{
+  position:absolute;
+  margin:0;
+  top:0;
+  right:0;
+  display:block;
+  width:100%;
+  height:32px;
+  background:#fff;
+  font-size:14px;
+  z-index:5;
+  color:#000;
+  border-bottom:1px solid #000;
+  background-color: #000;
+}
+
+#content 
+{
+  z-index: 3;
+  position: absolute;
+  display:block;
+  right: 0px;
+  top: 32px;
+  bottom: 75px;
+  background-color: white;
+  margin-left:auto;
+  margin-right: auto;
+  width: 100%;
+  color: black;
+  overflow:auto;
+}
+
+#foot 
+{
+  position:absolute;
+  margin:0;
+  bottom:0px;
+  right:0px;
+  display:block;
+  width:100%;
+  height:75px;
+  background:#fff;
+  color:#000;
+  font-size:14px;
+  z-index:5;
+  border-top:1px solid #000;
+  padding-left: 18px;
+  background-color: #ECE9D8;
+}
+
+.pad1 
+{
+  display:block;
+  width:18px;
+  height:50px;
+  float:left;
+}
+
+.pad2 
+{
+  display:block;
+  height:60px;
+}
+
+.tablink
+{
+  display:block;
+  color:#ccc;
+  font-size:14px;
+  font-weight:bold;
+  border:solid;
+  border-width:1px;
+  border-bottom-color:#ECE9D8;
+}
+
+pre
+{
+  font-size:1.2em;
+}
+
+.tab
+{
+  font-family:verdana,arial,sans serif;
+  font-size:14px;
+  background:#ECE9D8;
+  padding:10px;
+  width:100%;
+  color:#333;
+  /* blind border hack to display background colour in Netscape 4.x */
+  border:solid;
+  border-width:1px;
+  border-type:solid;
+  border-color:#003366;
+}
+
+.backtotop
+{
+  text-align:right;
+}
+
+.tablink {
+  display:inline; /*mandatory*/
+  margin-right:.5em;
+  padding-left:2em;
+  padding-right:2em;
+  text-decoration:none;
+  font-weight:bold;
+}
+
+.backtotop
+{
+  display:none; /*mandatory*/
+}
+
+.button_blue
+{
+  border: font-size: 11px;
+  width: 10em;
+  color: #FFFFFF;
+  font-weight: bold;
+  font-family: arial;
+  background-color: #3333CC;
+  text-decoration: none;
+}
+
+.button_red
+{
+  border: font-size: 11px;
+  width: 10em;
+  color: #FF0000;
+  font-weight: bold;
+  font-family: arial;
+  background-color: #3333CC;
+  text-decoration: none;
+}
+
+.button_purple
+{
+  border: font-size: 11px;
+  width: 10em;
+  color: #FF00FF;
+  font-weight: bold;
+  font-family: arial;
+  background-color: #3333CC;
+  text-decoration: none;
+}
+
+.button_green
+{
+  border: font-size: 11px;
+  width: 10em;
+  color: #00FF00;
+  font-weight: bold;
+  font-family: arial;
+  background-color: #3333CC;
+  text-decoration: none;
+}
+
+.button_gray
+{
+  border: font-size: 11px;
+  width: 10em;
+  color: #0099CC;
+  font-weight: bold;
+  font-family: arial;
+  background-color: #3333CC;
+  text-decoration: none;
+}
+
+.button_gray_disabled
+{
+  border: font-size: 11px;
+  width: 10em;
+  color: #808080;
+  font-weight: bold;
+  font-family: arial;
+  background-color: #3333CC;
+  text-decoration: none;
+}
+
+.color_declined
+{
+  color: #C0C0C0;
+}
+
+.color_approved
+{
+  color: #00FF00;
+}
+
+.color_pending
+{
+  color: #00FFFF;
+}
+
+.color_draft
+{
+  color: #FFFFFF;
+}
+
+.color_expired
+{
+  color: #FF6666;
+}
+
+.listbox
+{
+	margin-left: 3px;
+	width: 78em;
+	background: #000000;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 10;
+	font-weight: 700;
+	color: black;
+}
+
+.list_work_request
+{
+	margin-left: 3px;
+	width: 100em;
+	background: #000000;
+	font-family: "Courier New", Courier, monospace;
+	font-size: 10;
+	font-weight: 700;
+	color: black;
+}
+
+.color_gray
+{
+	color: #C0C0C0;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.color_lightgreen
+{
+	color: #80ff80;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}	
+.color_green
+{
+	color: #00FF00;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.color_cyan
+{
+	color: #00FFFF;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.color_white
+{
+	color: #FFFFFF;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.color_red
+{
+	color: #FF6666;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.color_lightred
+{
+	color: #FF99FF;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.color_yellow
+{
+	color: #FFFF00;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.color_purple
+{
+	color: #FF00FF;
+	font-family: "Courier New", Courier, monospace;
+	white-space: pre;
+}
+
+.same_size
+{
+  width: 1000px;
+  background: #000000;
+  font-family: "Courier New", Courier, monospace;
+  white-space: pre;
+  font-size: 12;
+  font-weight: 700;
+  color: black;
+
+}
+
+li.MsoNormal
+{
+  mso-style-parent:"";
+  margin-bottom:.0001pt;
+  font-size:12.0pt;
+  font-family:"Times New Roman";
+  margin-left:0in; margin-right:0in; margin-top:0in
+}
+
+.small_text{
+  font-size: 10px;
+}
+.blink
+{
+  font-size: 15px;
+  color: red;
+  display: inline;
+}
+
+/* - - - ADxMenu: BASIC styles [ MANDATORY ] - - - */
+
+/* remove all list stylings */
+.menu, .menu ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  list-style-type: none;
+  display: block;
+}
+
+.menu li {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  display: block;
+  float: left;  /* move all main list items into one row, by floating them */
+  position: relative; /* position each LI, thus creating potential IE.win overlap problem */
+  z-index: 5;   /* thus we need to apply explicit z-index here... */
+}
+
+.menu li:hover {
+  z-index: 10000; /* ...and here. this makes sure active item is always above anything else in the menu */
+  white-space: normal;/* required to resolve IE7 :hover bug (z-index above is ignored if this is not present)
+              see http://www.tanfa.co.uk/css/articles/pure-css-popups-bug.asp for other stuff that work */
+}
+
+.menu li li {
+  float: none;/* items of the nested menus are kept on separate lines */
+}
+
+.menu ul {
+  visibility: hidden; /* initially hide all submenus. */
+  position: absolute;
+  z-index: 10;
+  left: 0;  /* while hidden, always keep them at the top left corner, */
+  top: 0;   /*    to avoid scrollbars as much as possible */
+}
+
+.menu li:hover>ul {
+  visibility: visible;  /* display submenu them on hover */
+  top: 100%;  /* 1st level go below their parent item */
+}
+
+.menu li li:hover>ul {  /* 2nd+ levels go on the right side of the parent item */
+  top: 0;
+  left: 100%;
+}
+
+/* -- float.clear --
+  force containment of floated LIs inside of UL */
+.menu:after, .menu ul:after {
+  content: ".";
+  height: 0;
+  display: block;
+  visibility: hidden;
+  overflow: hidden;
+  clear: both;
+}
+.menu, .menu ul { /* IE7 float clear: */
+  min-height: 0;
+}
+/* -- float.clear.END --  */
+
+/* -- sticky.submenu --
+  it should not disappear when your mouse moves a bit outside the submenu
+  YOU SHOULD NOT STYLE the background of the ".menu UL" or this feature may not work properly!
+  if you do it, make sure you 110% know what you do */
+.menu ul {
+  background-image: url(empty.gif); /* required for sticky to work in IE6 and IE7 - due to their (different) hover bugs */
+  padding: 10px 30px 30px 30px;
+  margin: -10px 0 0 -30px;
+  /*background: #f00;*/ /* uncomment this if you want to see the "safe" area.
+                you can also use to adjust the safe area to your requirement */
+}
+.menu ul ul {
+  padding: 30px 30px 30px 10px;
+  margin: -30px 0 0 -10px;
+}
+/* -- sticky.submenu.END -- */
+
+/* - - - ADxMenu: DESIGN styles [ OPTIONAL, design your heart out :) ] - - - */
+
+.menu, .menu ul li {
+  color: #eee;
+  background: #234;
+}
+
+.menu ul {
+  width: 11em;
+}
+
+.menu a {
+  text-decoration: none;
+  color: #eee;
+  padding: .4em 1em;
+  display: block;
+  position: relative;
+}
+
+.menu a:hover, .menu li:hover>a 
+{
+  color: #fc3;
+}
+
+/* create borders around each item */
+.menu li li 
+{ 
+  border: 1px solid #ccc;
+}
+
+/* and remove the top border on all but first item in the list */
+.menu ul>li + li 
+{  
+  border-top: 0;
+}
+
+/* inset 2nd+ submenus, to show off overlapping */
+.menu li li:hover>ul 
+{  
+  top: 5px;
+  left: 90%;
+}
+
+/* Fix for IE5/Mac */
+.menu a 
+{
+  float: left;
+}
+/* End Fix */
+
+
