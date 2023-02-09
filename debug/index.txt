@@ -1,0 +1,10 @@
+==========================================================================================================================
+Debug file: ../debug//index.txt created on Thu, 09 Feb 2023 14:50:52 -0700. Mode: WRITE.
+
+d1: index.php 20: input_count = 1
+r1: index.php 21: my_request
+Array
+(
+    [method] => farthest
+)
+d1: index.php 27: method = farthest

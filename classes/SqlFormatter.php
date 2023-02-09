@@ -901,7 +901,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_quote . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$quote_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -917,7 +917,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_backtick_quote . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$backtick_quote_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -933,7 +933,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_reserved . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$reserved_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -951,7 +951,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_boundary . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$boundary_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -967,7 +967,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_number . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$number_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -983,7 +983,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_error . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$error_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -999,7 +999,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_comment . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$comment_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -1015,7 +1015,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_word . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$word_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -1031,7 +1031,7 @@ class SqlFormatter
         if (self::is_cli()) {
             return self::$cli_variable . $value . "\x1b[0m";
         } else {
-            return '<span ' . self::$variable_attributes . '>' . $value . '</span>';
+            return $value;
         }
     }
 
@@ -1077,7 +1077,7 @@ class SqlFormatter
                 return $string;
             }
 
-            return '<pre '.self::$pre_attributes.'>' . $string . '</pre>';
+            return $string;
         }
     }
 

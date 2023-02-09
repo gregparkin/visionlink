@@ -83,6 +83,12 @@ class library extends SqlFormatter
 
 	var $debug_onoff = 0;
 
+	var $debug_flag1 = false;
+	var $debug_flag2 = false;
+	var $debug_flag3 = false;
+	var $debug_flag4 = false;
+	var $debug_flag5 = false;
+
 	//var $whoops;
 
 	/** @fn __construct()
@@ -1157,7 +1163,7 @@ class library extends SqlFormatter
 			}
 
 			fprintf($this->fp_debug,
-					"<html><body><pre>Debug file: %s/%s created on %s. Mode: %s.\n<br>\n",
+					"Debug file: %s/%s created on %s. Mode: %s.\n\n",
 					$debug_path, $debug_file, date("r", time()), $mode);
 		}
 
@@ -1297,29 +1303,15 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
 
 		// Some php code may not be in a function
-		if (empty($func))
+		if ($this->fp_debug != null)
 		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"1: <font color=\"green\">%s</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-					basename($file), $line, $what);
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-			"1: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-					basename($file), $func, $line, $what);
-			}
+			fprintf($this->fp_debug,
+				"d1: %s %d: %s\n", basename($file), $line, $what);
 		}
 	}
 
@@ -1341,29 +1333,14 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
 
-		// Some php code may not be in a function
-		if (empty($func))
+		if ($this->fp_debug != null)
 		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"2: <font color=\"green\">%s</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-					basename($file), $line, $what);
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"2: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-						basename($file), $func, $line, $what);
-			}
+			fprintf($this->fp_debug,
+				"d2: %s %d: %s\n", basename($file), $line, $what);
 		}
 	}
 
@@ -1385,7 +1362,6 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
@@ -1393,21 +1369,8 @@ class library extends SqlFormatter
 		// Some php code may not be in a function
 		if (empty($func))
 		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"3: <font color=\"green\">%s</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-					basename($file), $line, $what);
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"3: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-						basename($file), $func, $line, $what);
-			}
+			fprintf($this->fp_debug,
+				"d3: %s %d: %s\n", basename($file), $line, $what);
 		}
 	}
 
@@ -1429,7 +1392,6 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
@@ -1437,21 +1399,8 @@ class library extends SqlFormatter
 		// Some php code may not be in a function
 		if (empty($func))
 		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"4: <font color=\"green\">%s</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-					basename($file), $line, $what);
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"4: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-						basename($file), $func, $line, $what);
-			}
+			fprintf($this->fp_debug,
+				"d4: %s %d: %s\n", basename($file), $line, $what);
 		}
 	}
 
@@ -1473,7 +1422,6 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
@@ -1481,20 +1429,8 @@ class library extends SqlFormatter
 		// Some php code may not be in a function
 		if (empty($func))
 		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"5: <font color=\"green\">%s</font> <font color=\"blue\">%d:</font> %s\n", basename($file), $line, $what);
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug,
-					"5: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font> %s\n",
-						basename($file), $func, $line, $what);
-			}
+			fprintf($this->fp_debug,
+				"d5: %s %d: %s\n", basename($file), $line, $what);
 		}
 	}
 
@@ -1516,7 +1452,6 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
@@ -1526,16 +1461,8 @@ class library extends SqlFormatter
 		{
 			if ($this->fp_debug != null)
 			{
-				fprintf($this->fp_debug, "1: <font color=\"green\">%s</font> <font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $line, $this->format_sql($what, true));
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug, "1: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $func, $line, $this->format_sql($what, true));
+				fprintf($this->fp_debug, "s1: %s %d SQL:\n%s\n",
+					basename($file), $line, $this->format_sql($what, true));
 			}
 		}
 	}
@@ -1558,7 +1485,6 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
@@ -1568,16 +1494,8 @@ class library extends SqlFormatter
 		{
 			if ($this->fp_debug != null)
 			{
-				fprintf($this->fp_debug, "2: <font color=\"green\">%s</font> <font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $line, $this->format_sql($what, true));
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug, "2: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $func, $line, $this->format_sql($what, true));
+				fprintf($this->fp_debug, "s2: %s %d SQL:\n%s\n",
+					basename($file), $line, $this->format_sql($what, true));
 			}
 		}
 	}
@@ -1600,7 +1518,6 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
@@ -1610,16 +1527,8 @@ class library extends SqlFormatter
 		{
 			if ($this->fp_debug != null)
 			{
-				fprintf($this->fp_debug, "3: <font color=\"green\">%s</font> <font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $line, $this->format_sql($what, true));
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug, "3: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $func, $line, $this->format_sql($what, true));
+				fprintf($this->fp_debug, "s3: %s %d SQL:\n%s\n",
+					basename($file), $line, $this->format_sql($what, true));
 			}
 		}
 	}
@@ -1642,7 +1551,6 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
@@ -1652,16 +1560,8 @@ class library extends SqlFormatter
 		{
 			if ($this->fp_debug != null)
 			{
-				fprintf($this->fp_debug, "4: <font color=\"green\">%s</font> <font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $line, $this->format_sql($what, true));
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug, "4: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $func, $line, $this->format_sql($what, true));
+				fprintf($this->fp_debug, "s4: %s %d SQL:\n%s\n",
+					basename($file), $line, $this->format_sql($what, true));
 			}
 		}
 	}
@@ -1684,7 +1584,6 @@ class library extends SqlFormatter
 
 		$argv = func_get_args();
 		$file = array_shift($argv);
-		$func = array_shift($argv);
 		$line = array_shift($argv);
 
 		$what = vsprintf(array_shift($argv), array_values($argv));
@@ -1694,16 +1593,8 @@ class library extends SqlFormatter
 		{
 			if ($this->fp_debug != null)
 			{
-				fprintf($this->fp_debug, "5: <font color=\"green\">%s</font> <font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $line, $this->format_sql($what, true));
-			}
-		}
-		else
-		{
-			if ($this->fp_debug != null)
-			{
-				fprintf($this->fp_debug, "5: <font color=\"green\">%s</font>&nbsp;<font color=\"purple\">%s()</font>&nbsp;<font color=\"blue\">%d:</font><br>%s\n",
-						basename($file), $func, $line, $this->format_sql($what, true));
+				fprintf($this->fp_debug, "s5: %s %d SQL:\n%s\n",
+					basename($file), $line, $this->format_sql($what, true));
 			}
 		}
 	}
@@ -1719,20 +1610,21 @@ class library extends SqlFormatter
 	 * @brief the rest of the arguments if the remainder of the text to be made into HTML comments.
 	 * @brief Example: $obj->debug_r1(__FILE__, __FUNCTION__, __LINE__, $myarray);
 	 */
-	public function debug_r1($file, $func, $line, $what = "")
+	public function debug_r1($file, $line, $what = NULL, $label = "")
 	{
-		if ($this->debug_onoff == 0)
+		if ($this->debug_onoff == 0 || $this->debug_flag1 == false)
 			return;
 
 		$file = basename($file);
 
 		if ($this->fp_debug != null)
 		{
-			fprintf($this->fp_debug,
-		"1: <font color=\"green\">%s</font> <font color=\"purple\">%s()</font> <font color=\"blue\">%d:</font>\n",
-				$file, $func, $line);
-			$out = print_r($what, true);
-			fprintf($this->fp_debug, "%s\n", $out);
+			fprintf($this->fp_debug, "r1: %s %d: %s\n", $file, $line, $label);
+			if (is_array($what))
+			{
+				$out = print_r($what, true);
+				fprintf($this->fp_debug, "%s", $out);
+			}
 		}
 	}
 
@@ -1747,20 +1639,21 @@ class library extends SqlFormatter
 	 * @brief the rest of the arguments if the remainder of the text to be made into HTML comments.
 	 * @brief Example: $obj->debug_r1(__FILE__, __FUNCTION__, __LINE__, $myarray);
 	 */
-	public function debug_r2($file, $func, $line, $what = "")
+	public function debug_r2($file, $line, $what = NULL, $label = "")
 	{
-		if ($this->debug_onoff == 0)
+		if ($this->debug_onoff == 0 || $this->debug_flag2 == false)
 			return;
 
 		$file = basename($file);
 
 		if ($this->fp_debug != null)
 		{
-			fprintf($this->fp_debug,
-				"2: <font color=\"green\">%s</font> <font color=\"purple\">%s()</font> <font color=\"blue\">%d:</font>\n",
-				$file, $func, $line);
-			$out = print_r($what, true);
-			fprintf($this->fp_debug, "%s\n", $out);
+			fprintf($this->fp_debug, "r2: %s %d: %s\n", $file, $line, $label);
+			if (is_array($what))
+			{
+				$out = print_r($what, true);
+				fprintf($this->fp_debug, "%s", $out);
+			}
 		}
 	}
 
@@ -1775,20 +1668,21 @@ class library extends SqlFormatter
 	 * @brief the rest of the arguments if the remainder of the text to be made into HTML comments.
 	 * @brief Example: $obj->debug_r1(__FILE__, __FUNCTION__, __LINE__, $myarray);
 	 */
-	public function debug_r3($file, $func, $line, $what = "")
+	public function debug_r3($file, $line, $what = NULL, $label = "")
 	{
-		if ($this->debug_onoff == 0)
+		if ($this->debug_onoff == 0 || $this->debug_flag3 == false)
 			return;
 
 		$file = basename($file);
 
 		if ($this->fp_debug != null)
 		{
-			fprintf($this->fp_debug,
-				"3: <font color=\"green\">%s</font> <font color=\"purple\">%s()</font> <font color=\"blue\">%d:</font>\n",
-				$file, $func, $line);
-			$out = print_r($what, true);
-			fprintf($this->fp_debug, "%s\n", $out);
+			fprintf($this->fp_debug, "r3: %s %d: %s\n", $file, $line, $label);
+			if (is_array($what))
+			{
+				$out = print_r($what, true);
+				fprintf($this->fp_debug, "%s", $out);
+			}
 		}
 	}
 
@@ -1803,20 +1697,21 @@ class library extends SqlFormatter
 	 * @brief the rest of the arguments if the remainder of the text to be made into HTML comments.
 	 * @brief Example: $obj->debug_r1(__FILE__, __FUNCTION__, __LINE__, $myarray);
 	 */
-	public function debug_r4($file, $func, $line, $what = "")
+	public function debug_r4($file, $line, $what = NULL, $label = "")
 	{
-		if ($this->debug_onoff == 0)
+		if ($this->debug_onoff == 0 || $this->debug_flag4 == false)
 			return;
 
 		$file = basename($file);
 
 		if ($this->fp_debug != null)
 		{
-			fprintf($this->fp_debug,
-				"4: <font color=\"green\">%s</font> <font color=\"purple\">%s()</font> <font color=\"blue\">%d:</font>\n",
-				$file, $func, $line);
-			$out = print_r($what, true);
-			fprintf($this->fp_debug, "%s\n", $out);
+			fprintf($this->fp_debug, "r4: %s %d: %s\n", $file, $line, $label);
+			if (is_array($what))
+			{
+				$out = print_r($what, true);
+				fprintf($this->fp_debug, "%s", $out);
+			}
 		}
 	}
 
@@ -1831,20 +1726,21 @@ class library extends SqlFormatter
 	 * @brief the rest of the arguments if the remainder of the text to be made into HTML comments.
 	 * @brief Example: $obj->debug_r1(__FILE__, __FUNCTION__, __LINE__, $myarray);
 	 */
-	public function debug_r5($file, $func, $line, $what = "")
+	public function debug_r5($file, $line, $what = NULL, $label = "")
 	{
-		if ($this->debug_onoff == 0)
+		if ($this->debug_onoff == 0 || $this->debug_flag5 == false)
 			return;
 
 		$file = basename($file);
 
 		if ($this->fp_debug != null)
 		{
-			fprintf($this->fp_debug,
-					"5: <font color=\"green\">%s</font> <font color=\"purple\">%s()</font> <font color=\"blue\">%d:</font>\n",
-					$file, $func, $line);
-			$out = print_r($what, true);
-			fprintf($this->fp_debug, "%s\n", $out);
+			fprintf($this->fp_debug, "r5: %s %d: %s\n", $file, $line, $label);
+			if (is_array($what))
+			{
+				$out = print_r($what, true);
+				fprintf($this->fp_debug, "%s", $out);
+			}
 		}
 	}
 

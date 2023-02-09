@@ -1,0 +1,98 @@
+==========================================================================================================================
+Debug file: ../debug//ajax_server.txt created on Thu, 09 Feb 2023 14:50:52 -0700. Mode: WRITE.
+
+r1: ajax_server.php 92: _REQUEST
+Array
+(
+    [request] => {"limit":100,"offset":0,"action":"farthest"}
+)
+d1: ajax_server.php 99: request: {"limit":100,"offset":0,"action":"farthest"}
+d1: ajax_server.php 124: _REQUEST: action = farthest
+d1: ajax_server.php 125: _REQUEST: limit  = 100
+d1: ajax_server.php 126: _REQUEST: offset = 0
+d1: ajax_server.php 127: _REQUEST: id     = 0
+d1: ajax_server.php 128: _REQUEST: name   = 
+d1: ajax_server.php 129: _REQUEST: x      = 0
+d1: ajax_server.php 130: _REQUEST: y      = 0
+r1: ajax_server.php 149: json
+r1: ajax_server.php 150: _POST
+Array
+(
+)
+r1: ajax_server.php 151: _GET
+Array
+(
+    [request] => {"limit":100,"offset":0,"action":"farthest"}
+)
+r1: ajax_server.php 152: _REQUEST
+Array
+(
+    [request] => {"limit":100,"offset":0,"action":"farthest"}
+)
+r1: ajax_server.php 153: _SERVER
+Array
+(
+    [HTTP_HOST] => visionlink.test
+    [HTTP_CONNECTION] => keep-alive
+    [HTTP_USER_AGENT] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
+    [HTTP_ACCEPT] => */*
+    [HTTP_REFERER] => http://visionlink.test/?method=farthest
+    [HTTP_ACCEPT_ENCODING] => gzip, deflate
+    [HTTP_ACCEPT_LANGUAGE] => en-US,en;q=0.9
+    [HTTP_COOKIE] => PHPSESSID=qig7b3fg719es37te0b43738qe
+    [PATH] => /Users/gregparkin/.docker/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:.:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/opt/homebrew/opt/openssl@3/bin:/Users/gregparkin/istio-1.16.0/bin:/Users/gregparkin/bin:/apache2/bin:/php/bin:/usr/local/pgsql/bin:/usr/local/bin:/usr/local/pgsql/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.11/bin:.:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/opt/homebrew/opt/openssl@3/bin:/Users/gregparkin/istio-1.16.0/bin:/Users/gregparkin/bin:/apache2/bin:/php/bin:/usr/local/pgsql/bin:/usr/local/bin:/usr/local/pgsql/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/gregparkin/Library/Application Support/JetBrains/Toolbox/scripts:/Users/gregparkin/Library/Application Support/JetBrains/Toolbox/scripts
+    [SERVER_SIGNATURE] => 
+    [SERVER_SOFTWARE] => Apache/2.4.55 (Unix) PHP/8.2.2
+    [SERVER_NAME] => visionlink.test
+    [SERVER_ADDR] => 127.0.0.1
+    [SERVER_PORT] => 80
+    [REMOTE_ADDR] => 127.0.0.1
+    [DOCUMENT_ROOT] => /Users/gregparkin/www/visionlink.test/htdocs
+    [REQUEST_SCHEME] => http
+    [CONTEXT_PREFIX] => 
+    [CONTEXT_DOCUMENT_ROOT] => /Users/gregparkin/www/visionlink.test/htdocs
+    [SERVER_ADMIN] => you@example.com
+    [SCRIPT_FILENAME] => /Users/gregparkin/www/visionlink.test/htdocs/ajax_server.php
+    [REMOTE_PORT] => 57570
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [REQUEST_METHOD] => GET
+    [QUERY_STRING] => request=%7B%22limit%22%3A100%2C%22offset%22%3A0%2C%22action%22%3A%22farthest%22%7D
+    [REQUEST_URI] => /ajax_server.php?request=%7B%22limit%22%3A100%2C%22offset%22%3A0%2C%22action%22%3A%22farthest%22%7D
+    [SCRIPT_NAME] => /ajax_server.php
+    [PHP_SELF] => /ajax_server.php
+    [REQUEST_TIME_FLOAT] => 1675979452.4553
+    [REQUEST_TIME] => 1675979452
+)
+r1: ajax_server.php 154: _SESSION
+Array
+(
+    [HOST] => 127.0.0.1
+    [PORT] => 5432
+    [DBMS] => visionlink
+
+    [USER] => visionlink
+    [PASS] => trialtask
+
+    [DBNAME] => visionlink
+    [PASSWORD] => trialtask
+    [is_debug_on] => Y
+    [debug_level1] => Y
+    [debug_level2] => Y
+    [debug_level3] => Y
+    [debug_level4] => Y
+    [debug_level5] => Y
+    [debug_path] => ../debug/
+    [debug_mode] => w
+)
+d1: ajax_server.php 156: FINAL: action = farthest
+d1: ajax_server.php 157: FINAL: limit = 100
+d1: ajax_server.php 158: FINAL: offset = 0
+d1: ajax_server.php 159: FINAL: id = 0
+d1: ajax_server.php 160: FINAL: name = 
+d1: ajax_server.php 161: FINAL: x = 0
+d1: ajax_server.php 162: FINAL: y = 0
+d1: ajax_server.php 260: In farthestRecords() method
+d1: ajax_server.php 294: SENDING: {"id":"19","name":"O","x":"1","y":"2"}
+d1: ajax_server.php 294: SENDING: {"id":"12","name":"Z","x":"2","y":"2"}
+d1: ajax_server.php 298: Exiting allRecords() function

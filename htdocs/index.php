@@ -1,243 +1,283 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <!-- The jQuery library is a prerequisite for all jqSuite products -->
-    <script type="text/ecmascript" src="js/jquery.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="css/jqx.base.css">
-    <link rel="stylesheet" type="text/css" href="css/jqx.bootstrap.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="css/jquery-ui.css">
-
-    <link rel="stylesheet" type="text/css" href="css/w2ui-1.5.rc1.css" />
-    <script type="text/javascript" src="js/w2ui-1.5.rc1.js"></script>
-
-    <link rel="stylesheet" type="text/css" href="https://rawgit.com/vitmalina/w2ui/master/dist/w2ui.min.css">
-
-    <meta charset="utf-8" />
-    <title>VisionLink</title>
-    <base href="visionlink.test">
-</head>
-<body>
-
 <?php
-
 require_once __DIR__ . '/autoload.php';
 
-//
-// Required to start once in order to retrieve user session information
-//
 if (session_id() == '')
     session_start();
 
-if (isset($_SESSION['user_cuid']) && $_SESSION['user_cuid'] == 'gparkin')
+$lib = new library();        // classes/library.php
+
+$lib->debug_start('index.txt');
+    date_default_timezone_set('America/Denver');
+
+// Parse QUERY_STRING if it exists
+$my_request = array();
+$method = "all";
+
+if (isset($_SERVER['QUERY_STRING']))
 {
-    ini_set('xdebug.collect_vars',    '5');
-    ini_set('xdebug.collect_vars',    'on');
-    ini_set('xdebug.collect_params',  '4');
-    ini_set('xdebug.dump_globals',    'on');
-    ini_set('xdebug.dump.SERVER',     'REQUEST_URI');
-    ini_set('xdebug.show_local_vars', 'on');
+    parse_str($_SERVER['QUERY_STRING'], $my_request);  // Parses URL parameter options into an array called $my_request
+    $input_count = count($my_request);                        // Get the count of the number of $my_request array elements.
+    $lib->debug1(__FILE__, __LINE__, "input_count = %d", $input_count);
+    $lib->debug_r1(__FILE__, __LINE__, $my_request, "my_request");
 
-    //$path = '/usr/lib/pear';
-    //set_include_path(get_include_path() . PATH_SEPARATOR . $path);
-}
-else
-{
-    ini_set('display_errors', 'Off');
+    if (isset($my_request['method']))
+        $method = $my_request['method'];
 }
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
-header("Pragma: no-cache");
-
-//
-// Disable buffering - This is what makes the loading screen work properly.
-//
-@apache_setenv('no-gzip', 1);
-@ini_set('zlib.output_compression', 0);
-@ini_set('output_buffering', 'Off');
-@ini_set('implicit_flush', 1);
-
-ob_implicit_flush(1); // Flush buffers
-
-for ($i = 0, $level = ob_get_level(); $i < $level; $i++)
-{
-    ob_end_flush();
-}
+$lib->debug1(__FILE__, __LINE__, "method = %s", $method);
 ?>
 
 <!DOCTYPE html>
 <html>
 <head>
-    <title>W2UI Demo: combo/8</title>
+    <title>Vision Link</title>
     <link rel="stylesheet" type="text/css" href="https://rawgit.com/vitmalina/w2ui/master/dist/w2ui.min.css">
+    <script type="text/javascript" src="js/jquery.js"></script>
 </head>
 <body>
-<center><h1>Vision Link - trial challenge</h1><h3>Greg Parkin</h3></center>
 
-
-<div style="padding: 20px 0px">
-    <button class="w2ui-btn" onclick="openPopup()">Open Popup</button>
-</div>
-
-<p>
-    I spent most of my time working on getting MacOS Ventura apache httpd and postgres working on my
-    Mac-Book Air using the new M2 arm64 chip. LAMP will no longer work properly in Ventura.<br><br>
-
-    I setup an Apache virtual host (vhost) for a local web server called: visionlin.test<br><br>
-
-    There is a folder here with a file in it called private/visionlink. This file contains the postgres
-    database connection information. The table "point" has been created per the instructions and I have
-    written a small API to load the information in the Grid.<br><br>
-
-    Contents of the private/visionlink file looks like this:<br><br>
-    HOST=127.0.0.1<br>
-    PORT=5432<br>
-    DBNAME=visionlink<br>
-    USER=visionlink<br>
-    PASSWORD=trialtask<br>
-    <br><br>
-
-    Take a lookup at the classes folder for postgres.php, library.php and SqlFormatter.php<br><br>
-
-    I decide to include the grid and the edit form in a w2ui popup dialog box. I ran out of time connecting
-    it up to use a Ajax script I built for it. See: (ajax_server.php). There is also a curl script
-    called server/test_ajax_server where you can test it.
-    <br><br>
-
-    You can all test it in your browser using the following URL options:<br><br>
-
-    INSERT:<br>
-    http://visionlink.test/ajax_server.php?action=insert&name=P&x=10&y=16
-    <br><br>
-
-    ALL:<br>
-    http://visionlink.test/ajax_server.php?action=all
-    <br><br><br>
-
-    GET:
-    http://visionlink.test/ajax_server.php?action=get&id=9
-    <br><br>
-
-    UPDATE:<br>
-    http://visionlink.test/ajax_server.php?action=update&id=9&name=Z&x=4&y=2
-    <br><br>
-
-    DELETE:<br>
-    http://visionlink.test/ajax_server.php?action=delete&id=9
-    <br><br>
-
-    There are a lot of unused .php programs, css, js, and image files, along with some frameworks I was wanted
-    to try, such as DataTables, Editor-PHP, node_modules, and so on.
-</p>
+<div id="grid" style="width: 800px; height: 400px;"></div>
 
 <script type="module">
-import { w2layout, w2grid, w2form, w2popup, w2utils } from 'https://rawgit.com/vitmalina/w2ui/master/dist/w2ui.es6.min.js'
+    import { w2grid, w2alert } from 'https://rawgit.com/vitmalina/w2ui/master/dist/w2ui.es6.min.js'
 
-// widget configuration
-let config = {
-    layout: {
-        name: 'layout',
-        padding: 4,
-        panels: [
-            { type: 'left', size: '50%', resizable: true, minSize: 300 },
-            { type: 'main', minSize: 300, style: 'overflow: hidden' }
-        ]
-    },
-    grid: {
-        name: 'grid',
-        style: 'border: 1px solid #efefef',
-        columns: [
-            { field: 'recid',   text: 'ID',   size: '25%', sortable: true, searchable: true },
-            { field: 'name', text: 'Name', size: '25%', sortable: true, searchable: true },
-            { field: 'x',    text: 'X',    size: '25%', sortable: true, searchable: true },
-            { field: 'y',    text: 'Y',    size: '25%', sortable: true, searchable: true  }
-        ],
-        records: [
-            <?php
-            $pg = new postgres("visionlink");
-            $pg->sql("select * from point order by name", array());
-            $do_comman = false;
-            while ($pg->fetch())
-            {
-                if ($do_comma)
-                    printf(",\n");
+    let base_url = window.location.origin;
 
-                $do_comma = true;
-
-                printf("{ recid: %d, name: '%s', x: '%d', y: '%d' }",
-                   $pg->id, $pg->name, $pg->x, $pg->y);
-            }
-            ?>
-        ],
-        async onClick(event) {
-            await event.complete // needs to wait for evnet complete cycle, so selection is right
-            let sel = grid.getSelection()
-            if (sel.length == 1) {
-                form.recid  = sel[0]
-                form.record = w2utils.clone(grid.get(sel[0]))
-                form.refresh()
-            } else {
-                form.clear()
-            }
-        }
-    },
-    form: {
-        header: 'Edit Record',
-        name: 'form',
-        style: 'border: 1px solid #efefef',
-        fields: [
-            { field: 'recid', type: 'text', required: true, html: { label: 'ID',   attr: 'size="10" maxlength="10"' } },
-            { field: 'name',  type: 'text', required: true, html: { label: 'Name', attr: 'size="40" maxlength="40"' } },
-            { field: 'x',     type: 'text', required: true, html: { label: 'X',    attr: 'size="40" maxlength="40"' } },
-            { field: 'y',     type: 'text', required: true, html: { label: 'Y',    attr: 'size="40" maxlength="40"' } }
-        ],
-        actions: {
-            Add() {
-                this.clear();
-            },
-            Save() {
-                let errors = this.validate()
-                if (errors.length > 0) return
-                if (this.recid == 0) {
-                    grid.add(w2utils.extend({ id: grid.records.length + 1 }, 0))
-                    grid.selectNone()
-                    this.clear()
-                } else {
-                    grid.set(this.recid, this.record)
-                    grid.selectNone()
-                    this.clear()
-                }
-            },
-            Delete() {
-                this.clear()
-            }
-        }
+    function reset() {
+        //window.location.reload('visionlink.test');
+        //window.location.replace('visionlink.test');
+        // window.location.assign(‘https://www.ExampleURL.com/’);
+        window.location.assign('http://visionlink.test');
     }
-}
 
-// initialization in memory
-let layout = new w2layout(config.layout)
-let grid = new w2grid(config.grid)
-let form = new w2form(config.form)
+    function nearest() {
+        //base_url = base_url + '?method=nearest';
+        window.location.assign('http://visionlink.test?method=nearest');
+        //window.location.reload(base_url);
+    }
 
-window.openPopup = function() {
-    w2popup.open({
-        title: 'Vision Link',
-        width: 900,
-        height: 600,
-        showMax: true,
-        body: '<div id="main" style="position: absolute; left: 2px; right: 2px; top: 0px; bottom: 3px;"></div>'
+    function farthest() {
+        //base_url = base_url + '?method=farthest';
+        window.location.assign('http://visionlink.test?method=farthest');
+        //window.location.reload(base_url);
+    }
+
+    document.getElementById("myReset").onclick = reset;
+    document.getElementById("myNearest").onclick = nearest;
+    document.getElementById("myFarthest").onclick = farthest;
+
+    let grid = new w2grid({
+        name:     'grid',
+        theme:    'metro',
+        url:      'ajax_server.php',
+        method:   'POST',
+        postData: {action: '<?php echo $method; ?>',},
+        box:      '#grid',
+        recid:    '1',
+        show: {
+            toolbar: true,
+            footer: true,
+            toolbarAdd: true,
+            toolbarDelete: true,
+            toolbarSave: true,
+            toolbarEdit: true
+        },
+        searches: [
+            { field: 'id',    label: 'id',    type: 'text' },
+            { field: 'name',  label: 'Name',  type: 'text' },
+            { field: 'x',     label: 'X',     type: 'text' },
+            { field: 'y',     label: 'Y',     type: 'text' }
+        ],
+        columns: [
+            { field: 'id', text: 'ID', size: '50px', sortable: true, attr: 'align=center' },
+            { field: 'name', text: 'Name', size: '30%', sortable: true },
+            { field: 'x', text: 'x', size: '30%', sortable: true },
+            { field: 'y', text: 'y', size: '40%' }
+        ],
+        onAdd: function (event) {
+            newRecordPopup();
+            this.grid.refresh();
+        },
+        onEdit: function (event) {
+            var grid = this;
+            var sel = grid.getSelection();
+            var id = grid.get(sel[0])['id'];
+            var name = grid.get(sel[0])['name'];
+            var x = grid.get(sel[0])['x'];
+            var y = grid.get(sel[0])['y'];
+            updateRecordPopup(id, name, x, y);
+        },
+        onDelete: function (event) {
+            console.log('delete has default behavior');
+
+            var grid = this;
+            var sel = grid.getSelection();
+            var id = grid.get(sel[0])['id'];
+
+            this.postData = {
+                action: 'delete',
+                id:     id
+            }
+        },
+        onSave: function (event) {
+            w2alert('save');
+        }
     })
-    .then(e => {
-        layout.render('#w2ui-popup #main')
-        layout.html('left', grid)
-        layout.html('main', form)
-    })
-}
 </script>
 
+<script type="module">
+    import { w2form, query, w2ui, w2popup } from 'https://rawgit.com/vitmalina/w2ui/master/dist/w2ui.es6.min.js'
+
+    window.newRecordPopup = function() {
+        if (!w2ui.foo) {
+            new w2form({
+                name: 'new_record',
+                style: 'border: 0px; background-color: transparent;',
+                fields: [
+                    { field: 'name', type: 'text', required: true, html: { label: 'Name' } },
+                    { field: 'x', type: 'text', required: true, html: { label: 'X' } },
+                    { field: 'y', type: 'text', required: true, html: { label: 'Y' } }
+                ],
+                actions: {
+                    Reset(event) {
+                        this.clear()
+                    },
+                    Save(event) {
+                        if (this.validate().length == 0) {
+                            // Everything is validated, let's save the record.
+                            console.log(this.getValue('name'));
+                            console.log(this.getValue('x'));
+                            console.log(this.getValue('y'));
+
+                            // retrieve form data
+                            //var data = form.record;
+
+                            $.ajax({
+                                url: 'ajax_server.php',
+                                data: {
+                                    action: 'insert',
+                                    name: this.getValue('name'),
+                                    x:    this.getValue('x'),
+                                    y:    this.getValue('y')
+                                },
+                                dataType: "json",
+                                success: function (data) {
+                                    console.log(data);
+                                },
+                                error: function (error) {
+                                    console.log(`Error ${error}`);
+                                }
+                            });
+
+                            w2popup.close();
+                            location.reload();
+                        }
+                    },
+                    Cancel(event) {
+                        w2popup.close();
+                    }
+                }
+            });
+        }
+
+        w2popup.open({
+            title   : 'Add Record',
+            body    : '<div id="form" style="width: 100%; height: 100%;"></div>',
+            style   : 'padding: 15px 0px 0px 0px',
+            width   : 500,
+            height  : 280,
+            showMax : true,
+            async onToggle(event) {
+                await event.complete
+                w2ui.new_record.resize();
+            }
+        })
+            .then((event) => {
+                w2ui.new_record.render('#form')
+            });
+    }
+
+    window.updateRecordPopup = function(id, name, x, y) {
+        if (!w2ui.foo) {
+            new w2form({
+                name: 'update_record',
+                style: 'border: 0px; background-color: transparent;',
+                fields: [
+                    {field: 'id', type: 'int', required: true, readonly: false, html: {label: 'ID'}},
+                    {field: 'name', type: 'text', required: true, html: {label: 'Name'}},
+                    {field: 'x', type: 'text', required: true, html: {label: 'X'}},
+                    {field: 'y', type: 'text', required: true, html: {label: 'Y'}}
+                ],
+                record: {
+                    id: id,
+                    name: name,
+                    x: x,
+                    y: y
+                },
+                actions: {
+                    Save(event) {
+                        if (this.validate().length == 0) {
+                            // Everything is validated, let's save the record.
+                            console.log(this.getValue('id'));
+                            console.log(this.getValue('name'));
+                            console.log(this.getValue('x'));
+                            console.log(this.getValue('y'));
+
+                            // retrieve form data
+                            //var data = form.record;
+
+                            $.ajax({
+                                url: 'ajax_server.php',
+                                data: {
+                                    action: 'update',
+                                    id: this.getValue('id'),
+                                    name: this.getValue('name'),
+                                    x: this.getValue('x'),
+                                    y: this.getValue('y')
+                                },
+                                dataType: "json",
+                                success: function (data) {
+                                    console.log(data);
+                                },
+                                error: function (error) {
+                                    console.log(`Error ${error}`);
+                                }
+                            });
+
+                            w2popup.close();
+                            location.reload();
+                        }
+                    },
+                    Cancel(event) {
+                        w2popup.close();
+                    }
+                }
+            });
+        }
+        w2popup.open({
+            title: 'Update Record',
+            body: '<div id="form" style="width: 100%; height: 100%;"></div>',
+            style: 'padding: 15px 0px 0px 0px',
+            width: 500,
+            height: 280,
+            showMax: true,
+            async onToggle(event) {
+                await event.complete
+                w2ui.update_record.resize();
+            }
+        })
+            .then((event) => {
+                w2ui.update_record.render('#form')
+            });
+    }
+</script>
+<div style="width: 800px; height: 400px;">
+    <br>
+    <center>
+        <button id='myReset' onclick="reset()">Reset</button>
+        <button id='myNearest' onclick="nearest()">Nearest points at distance 1.4</button>
+        <button id='myFarthest' onclick="farthest()">Farthest points at distance 2.2</button>
+    </center>
+</div>
 </body>
 </html>
