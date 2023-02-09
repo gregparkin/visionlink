@@ -1,0 +1,43 @@
+#!/bin/zsh
+
+getAll()
+{
+	echo  "\nCalling: ajax_server.php\n"
+	curl -H "Content-Type: application/json; charset=UTF-8" --json '{"action":"all", "id":"", "name":"", "x":"", "y":""}' http://visionlink.test/ajax_server.php 2>/dev/null | \
+	awk -F" " 'BEGIN { 
+		found=0; 
+	} 
+	{
+		if ($1 == "{") { 
+			found=1; 
+		}
+	}
+	{
+		if (found == 1) {
+			print $0;
+		}
+	}' 
+}
+
+insert()
+{
+	echo "\nInserting one record!\n"
+	curl -H "Content-Type: application/json; charset=UTF-8" --json '{"action":"insert", "name":"P", "x":"5", "y":"6"}' http://visionlink.test/ajax_server.php 2>/dev/null | \
+	awk -F" " 'BEGIN { 
+		found=0; 
+	} 
+	{
+		if ($1 == "{") { 
+			found=1; 
+		}
+	}
+	{
+		if (found == 1) {
+			print $0;
+		}
+	}' 
+}
+
+getAll
+#insert
+

@@ -1,0 +1,52 @@
+==========================================================================================================================
+Debug file: ../debug//postgres.txt created on Thu, 09 Feb 2023 14:50:52 -0700. Mode: WRITE.
+
+d1: library.php 0: 1910
+d1: library.php 0: 1914
+d1: library.php 0: 1918
+d1: library.php 0: 1922
+d1: library.php 0: 1926
+d1: postgres.php 78: Trying logon()
+d1: postgres.php 167: read_private_file(visionlink), filename = ../private/visionlink
+d2: postgres.php 178: private file opened: ../private/visionlink
+d5: postgres.php 213: HOST:127.0.0.1 PORT:5432 DBNAME:visionlink USER:visionlink PASSWORD=trialtask
+d1: postgres.php 250: Host: host = 127.0.0.1 Port: port = 5432 DB: dbname = visionlink user = visionlink password=trialtask
+d5: postgres.php 261: Connected!
+d1: postgres.php 292: running sql() method
+s1: postgres.php 297 SQL:
+select 
+  * 
+from 
+  point 
+where 
+  x &lt;= 2 
+  and y &gt;= 2 
+order by 
+  name
+d1: postgres.php 320: Number of rows: 2
+
+d1: postgres.php 323: is_select_statement = true
+r1: postgres.php 378: row
+Array
+(
+    [id] => 19
+    [name] => O
+    [x] => 1
+    [y] => 2
+)
+d1: postgres.php 122: postgres get: id
+d1: postgres.php 122: postgres get: name
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+r1: postgres.php 378: row
+Array
+(
+    [id] => 12
+    [name] => Z
+    [x] => 2
+    [y] => 2
+)
+d1: postgres.php 122: postgres get: id
+d1: postgres.php 122: postgres get: name
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y

@@ -5,6 +5,12 @@
  * @author    Greg Parkin
  */
 
+/**
+ * allRecords()    - Done!
+ * getRecord()
+ * insertRecord()
+ * deleteRecord()  - Done!
+ */
 require_once __DIR__ . '/autoload.php';
 
 if (session_id() == '')
@@ -33,13 +39,14 @@ header('Content-type: application/json');
 //       in the client side program.
 //
 $lib = new library();        // classes/library.php
-$lib->debug_start('ajax_server.html');
+$lib->debug_start('ajax_server.txt');
 date_default_timezone_set('America/Denver');
 
 if (!$pg = new postgres("visionlink"))
 {
+    $lib->debug1(__FILE__, __LINE__, "Cannot connect to visionlink: %s", $pg->getLastError());
     printf("{\n");
-    printf("\"status\":    \"FAILED\",\n");
+    printf("\"status\":    \"error\",\n");
     printf("\"message\":   \"Cannot connect to visionlink: %s\"\n", $pg->getLastError());
     printf("}\n");
     exit();
@@ -56,75 +63,160 @@ if (isset($_SERVER['QUERY_STRING']))
     $input_count = count($my_request);                        // Get the count of the number of $my_request array elements.
 }
 
-$lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $my_request);
-
 // Read-only stream allows you to read raw data from the request body.
 $json = json_decode(file_get_contents("php://input"));
-$lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $json);
 
-// Data can be sent on the URL with options.
-$action = (array_key_exists('action', $my_request)) ? $my_request['action'] : '';  // get, all, insert, update, delete
-$id     = (array_key_exists('id', $my_request)) ? $my_request['id'] : '';          // point.id
-$name   = (array_key_exists('name', $my_request)) ? $my_request['name'] : '';      // point.name
-$x      = (array_key_exists('x', $my_request)) ? $my_request['x'] : '';            // point.x
-$y      = (array_key_exists('y', $my_request)) ? $my_request['y'] : '';            // point.y
+$action = 'all';  // get, all, insert, update, delete
+$id     = '';  // point.id
+$name   = '';  // point.name
+$x      = '';  // point.x
+$y      = '';  // point.y
+$limit  = 100;
+$offset = 0;
 
-// See if the data came in the body as a JSON array.
-if (isset($json->action))
-    $action = $json->action;  // This will be: get, all, insert, update, delete
+if (isset($json->{'action'}))
+    $action          = $json->{'action'};  // This will be: get, all, insert, update, delete
 
-if (isset($json->id))
-    $id = $json->id;
+if (isset($json->{'id'}))
+    $id       = $json->{'id'};
 
-if (isset($json->name))
-    $name = $json->name;
+if (isset($json->{'name'}))
+    $name = $json->{'name'};
 
-if (isset($json->x))
-    $x = $json->x;
+if (isset($json->{'x'}))
+    $x = $json->{'x'};
 
-if (isset($json->y))
-    $y = $json->y;
+if (isset($json->{'y'}))
+    $y = $json->{'y'};
 
-$lib->debug1(__FILE__, __FUNCTION__, __LINE__, "action = %s", $action);
-$lib->debug1(__FILE__, __FUNCTION__, __LINE__, "id = %d",     $id);
-$lib->debug1(__FILE__, __FUNCTION__, __LINE__, "name = %s",   $name);
-$lib->debug1(__FILE__, __FUNCTION__, __LINE__, "x = %d",      $x);
-$lib->debug1(__FILE__, __FUNCTION__, __LINE__, "y = %d",      $y);
+$lib->debug_r1(__FILE__, __LINE__, $_REQUEST, "_REQUEST");
 
-$lib->debug1(  __FILE__, __FUNCTION__, __LINE__, "json: ");
-$lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $json);
-$lib->debug1(  __FILE__, __FUNCTION__, __LINE__, "_POST: ");
-$lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $_POST);
-$lib->debug1(  __FILE__, __FUNCTION__, __LINE__, "_GET: ");
-$lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $_GET);
-$lib->debug1(  __FILE__, __FUNCTION__, __LINE__, "_REQUEST: ");
-$lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $_REQUEST);
-$lib->debug1(  __FILE__, __FUNCTION__, __LINE__, "_SERVER: ");
-$lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $_SERVER);
-$lib->debug1(  __FILE__, __FUNCTION__, __LINE__, "_SESSION: ");
-$lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $_SESSION);
+// If w2ui.grid uses it's grid delete function then it puts the information in
+// an array called: $_REQUEST['request'] where request is another array to the info
+// we need below.
+if (array_key_exists('request', $_REQUEST))
+{
+    $lib->debug1(__FILE__, __LINE__, "request: %s", $_REQUEST['request']);
 
-// get, select, insert, update, delete
-// if ($action == "get")      // Retrieve record from the "point" table
+    $request = json_decode($_REQUEST['request']);
 
-/**
- * @brief  select all rows from the point table ordered by name.
- * @return void
- */
-function allRecords()
+    if (isset($request->action))
+        $action = $request->action;
+
+    if (isset($request->limit))
+        $limit = $request->limit;
+
+    if (isset($request->offset))
+        $offset = $request->offset;
+
+    if (isset($request->id))
+        $id = $request->id;
+
+    if (isset($request->name))
+        $name = $request->name;
+
+    if (isset($request->x))
+        $x = $request->x;
+
+    if (isset($request->y))
+        $y = $request->y;
+
+    $lib->debug1(  __FILE__, __LINE__, "_REQUEST: action = %s", $action);
+    $lib->debug1(  __FILE__, __LINE__, "_REQUEST: limit  = %d", $limit);
+    $lib->debug1(  __FILE__, __LINE__, "_REQUEST: offset = %d", $offset);
+    $lib->debug1(  __FILE__, __LINE__, "_REQUEST: id     = %d", $id);
+    $lib->debug1(  __FILE__, __LINE__, "_REQUEST: name   = %s", $name);
+    $lib->debug1(  __FILE__, __LINE__, "_REQUEST: x      = %d", $x);
+    $lib->debug1(  __FILE__, __LINE__, "_REQUEST: y      = %d", $y);
+}
+
+// Save record plugs the data directory in $_REQUEST[...]
+if (isset($_REQUEST['action']))
+    $action = $_REQUEST['action'];
+
+if (isset($_REQUEST['id']))
+    $id = $_REQUEST['id'];
+
+if (isset($_REQUEST['name']))
+    $name = $_REQUEST['name'];
+
+if (isset($_REQUEST['x']))
+    $x = $_REQUEST['x'];
+
+if (isset($_REQUEST['y']))
+    $y = $_REQUEST['y'];
+
+$lib->debug_r1(__FILE__, __LINE__, $json, "json");
+$lib->debug_r1(__FILE__, __LINE__, $_POST, "_POST");
+$lib->debug_r1(__FILE__, __LINE__, $_GET, "_GET");
+$lib->debug_r1(__FILE__, __LINE__, $_REQUEST, "_REQUEST");
+$lib->debug_r1(__FILE__, __LINE__, $_SERVER, "_SERVER");
+$lib->debug_r1(__FILE__, __LINE__, $_SESSION, "_SESSION");
+
+$lib->debug1(__FILE__, __LINE__, "FINAL: action = %s", $action);
+$lib->debug1(__FILE__, __LINE__, "FINAL: limit = %d",  $limit);
+$lib->debug1(__FILE__, __LINE__, "FINAL: offset = %d", $offset);
+$lib->debug1(__FILE__, __LINE__, "FINAL: id = %d",     $id);
+$lib->debug1(__FILE__, __LINE__, "FINAL: name = %s",   $name);
+$lib->debug1(__FILE__, __LINE__, "FINAL: x = %d",      $x);
+$lib->debug1(__FILE__, __LINE__, "FINAL: y = %d",      $y);
+
+switch ($action)
+{
+    case 'nearest':
+        nearestRecords();  // Nearest points at distance 1.4
+        break;
+    case 'farthest':
+        farthestRecords(); // Farthest points at distance 2.2
+        break;
+    case 'all':
+        allRecords();
+        break;
+    case 'update':
+        $lib->debug1(__FILE__, __LINE__, "update: action = %s", $action);
+        $lib->debug1(__FILE__, __LINE__, "update: limit = %d",  $limit);
+        $lib->debug1(__FILE__, __LINE__, "update: offset = %d", $offset);
+        $lib->debug1(__FILE__, __LINE__, "update: id = %d",     $id);
+        $lib->debug1(__FILE__, __LINE__, "update: name = %s",   $name);
+        $lib->debug1(__FILE__, __LINE__, "update: x = %d",      $x);
+        $lib->debug1(__FILE__, __LINE__, "update: y = %d",      $y);
+        updateRecord();
+        break;
+    case 'insert':
+        $lib->debug1(__FILE__, __LINE__, "insert: action = %s", $action);
+        $lib->debug1(__FILE__, __LINE__, "insert: limit = %d",  $limit);
+        $lib->debug1(__FILE__, __LINE__, "insert: offset = %d", $offset);
+        $lib->debug1(__FILE__, __LINE__, "insert: id = %d",     $id);
+        $lib->debug1(__FILE__, __LINE__, "insert: name = %s",   $name);
+        $lib->debug1(__FILE__, __LINE__, "insert: x = %d",      $x);
+        $lib->debug1(__FILE__, __LINE__, "insert: y = %d",      $y);
+        insertRecord();
+        break;
+    case 'delete':
+        deleteRecord();
+        break;
+    default:
+        $lib->debug1(__FILE__, __LINE__, "Invalid action: (%s)", $action);
+        printf("{\n");
+        printf("\"status\":     \"error\",\n");
+        printf("\"message\":    \"Invalid action: %s\"\n", $action);
+        printf("}\n");
+        $pg->logoff();
+        break;
+}
+
+function nearestRecords()
 {
     global $lib, $pg;
 
+    $lib->debug1(__FILE__, __LINE__, "In nearestRecords() method");
     $row = array();
 
-    $sql = sprintf("select * from point order by name");
-    $params = array();
-    $lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $params);
-
-    if (!$pg->sql($sql, $params))
+    if (!$pg->sql("select * from point where x >= 1 and y <= 4 order by name"))
     {
+        $lib->debug1(__FILE__, __LINE__, "SQL Error: %s", $pg->getLastError());
         printf("{\n");
-        printf("\"status\":                         \"FAILED\",\n");
+        printf("\"status\":                         \"error\",\n");
         printf("\"message\":                        \"SQL Error: %s\"\n", $pg->getLastError());
         printf("}\n");
         $pg->logoff();
@@ -132,9 +224,10 @@ function allRecords()
     }
 
     printf("{\n");
-    printf("\"status\":  \"SUCCESS\",\n");
-    printf("\"message\": \"Sending all records in point table.\",\n");
-    printf("\"rows\": [\n");
+    printf("\"status\":  \"success\",\n");
+    printf("\"message\": \"Sending all nearest point records where 1.4 in point table.\",\n");
+    printf("\"records\": [\n");
+
     $count_records = 0;
 
     while ($pg->fetch())
@@ -150,10 +243,114 @@ function allRecords()
         $row['y']    =  $pg->y;
 
         echo json_encode($row);
-        $lib->debug1(__FILE__, __FUNCTION__, __LINE__, "SENDING: %s", json_encode($row));
+        $lib->debug1(__FILE__, __LINE__, "SENDING: %s", json_encode($row));
     }
 
-    printf("]}\n");  // Close out the data stream
+    printf("\n]\n}\n");
+    $lib->debug1(__FILE__, __LINE__, "Exiting allRecords() function");
+    $pg->logoff();
+
+    exit();
+}
+
+function farthestRecords()
+{
+    global $lib, $pg;
+
+    $lib->debug1(__FILE__, __LINE__, "In farthestRecords() method");
+    $row = array();
+
+    if (!$pg->sql("select * from point where x <= 2 and y >= 2 order by name"))
+    {
+        $lib->debug1(__FILE__, __LINE__, "SQL Error: %s", $pg->getLastError());
+        printf("{\n");
+        printf("\"status\":                         \"error\",\n");
+        printf("\"message\":                        \"SQL Error: %s\"\n", $pg->getLastError());
+        printf("}\n");
+        $pg->logoff();
+        exit();
+    }
+
+    printf("{\n");
+    printf("\"status\":  \"success\",\n");
+    printf("\"message\": \"Sending all farthest point records where 2.2 in point table.\",\n");
+    printf("\"records\": [\n");
+
+    $count_records = 0;
+
+    while ($pg->fetch())
+    {
+        if ($count_records > 0)
+            printf(",\n");  // Let the client know we have more records to send
+
+        $count_records++;
+
+        $row['id']   =  $pg->id;
+        $row['name'] =  $pg->name;
+        $row['x']    =  $pg->x;
+        $row['y']    =  $pg->y;
+
+        echo json_encode($row);
+        $lib->debug1(__FILE__, __LINE__, "SENDING: %s", json_encode($row));
+    }
+
+    printf("\n]\n}\n");
+    $lib->debug1(__FILE__, __LINE__, "Exiting allRecords() function");
+    $pg->logoff();
+
+    exit();
+}
+
+/**
+ * @brief  select all rows from the point table ordered by name.
+ * @return void
+ *
+ * WORKING!
+ *
+ */
+function allRecords()
+{
+    global $lib, $pg;
+
+    $lib->debug1(__FILE__, __LINE__, "In allRecords() method");
+    $row = array();
+
+    if (!$pg->sql("select * from point order by name"))
+    {
+        $lib->debug1(__FILE__, __LINE__, "SQL Error: %s", $pg->getLastError());
+        printf("{\n");
+        printf("\"status\":                         \"error\",\n");
+        printf("\"message\":                        \"SQL Error: %s\"\n", $pg->getLastError());
+        printf("}\n");
+        $pg->logoff();
+        exit();
+    }
+
+    printf("{\n");
+    printf("\"status\":  \"success\",\n");
+    printf("\"message\": \"Sending all records in point table.\",\n");
+    printf("\"records\": [\n");
+
+    $count_records = 0;
+
+    while ($pg->fetch())
+    {
+        if ($count_records > 0)
+            printf(",\n");  // Let the client know we have more records to send
+
+        $count_records++;
+
+        $row['id']   =  $pg->id;
+        $row['name'] =  $pg->name;
+        $row['x']    =  $pg->x;
+        $row['y']    =  $pg->y;
+
+        echo json_encode($row);
+        $lib->debug1(__FILE__, __LINE__, "SENDING: %s", json_encode($row));
+    }
+
+    printf("\n]\n}\n");
+    $lib->debug1(__FILE__, __LINE__, "Exiting allRecords() function");
     $pg->logoff();
 
     exit();
@@ -161,24 +358,19 @@ function allRecords()
 
 /**
  * @brief Get one row of data selected by $id
- * @param $id
  * @return void
  */
-function getRecord($id)
+function getRecord()
 {
-    global $lib, $pg;
+    global $lib, $pg, $id;
 
-    //$sql = sprintf("select * from point where id = id", $id);
-    $sql = "select * from point where id = $1";
-    $lib->debug_sql1(__FILE__, __FUNCTION__, __LINE__, $sql);
-    $params = array($id);
-    $lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $params);
+    $lib->debug1(__FILE__, __LINE__, "In getRecord(%d) method", $id);
 
-    if (!$pg->sql($sql, $params))
+    if (!$pg->sql("select * from point where id = %d", $id))
     {
         printf("{\n");
-        printf("\"status\":  \"FAILED\",\n");
-        printf("\"message\": \"SQL Error: %s\"\n", $pg->getLastError());
+        printf("\"status\":                         \"error\",\n");
+        printf("\"message\":                        \"SQL Error: %s\"\n", $pg->getLastError());
         printf("}\n");
         $pg->logoff();
 
@@ -187,8 +379,9 @@ function getRecord($id)
 
     if (!$pg->fetch())
     {
+        $lib->debug1(__FILE__, __LINE__, "Redord id=%d NOT FOUND: %s", $id, $pg->getLastError());
         printf("{\n");
-        printf("\"status\":                         \"FAILED\",\n");
+        printf("\"status\":                         \"error\",\n");
         printf("\"message\":                        \"Record id=%d NOT FOUND: %s\"\n", $id, $pg->getLastError());
         printf("}\n");
         $pg->logoff();
@@ -200,14 +393,10 @@ function getRecord($id)
     printf("\"status\":  \"SUCCESS\",\n");
     printf("\"message\": \"There be a whale here Captain!\",\n");
     printf("\"rows\": [\n");  // rows is where the actual json data is kept.
-
-    $row['id']   =  $pg->id;
-    $row['name'] =  $pg->name;
-    $row['x']    =  $pg->x;
-    $row['y']    =  $pg->y;
-
-    echo json_encode($row);
-    $lib->debug1(__FILE__, __FUNCTION__, __LINE__, "SENDING: %s", json_encode($row));
+    printf("\"id\":      \"%d\",\n", $pg->id);
+    printf("\"name\":    \"%s\",\n", $pg->name);
+    printf("\"x\":       \"%d\",\n", $pg->x);
+    printf("\"y\":       \"%d\"\n",  $pg->y);
     printf("]}\n");  // Close out the data stream
 
     $pg->logoff();
@@ -216,90 +405,120 @@ function getRecord($id)
 
 /**
  * @brief Insert new data into point table.
- * @param $name    Not-NULL
- * @param $x       Not-NULL
- * @param $y       NOT-NULL
  * @return void
+ *
+ * WORKING!
+ *
  */
-function insertRecord($name, $x, $y)
+function insertRecord()
 {
-    global $lib, $pg;
+    global $lib, $pg, $name, $x, $y;
 
-    $lib->debug_sql1(__FILE__, __FUNCTION__, __LINE__, "name=%s, x=%d, y=%d", $name, $x, $y);
+    $lib->debug1(__FILE__, __LINE__, "insertRecord: name = %s",   $name);
+    $lib->debug1(__FILE__, __LINE__, "insertRecord: x = %d",      $x);
+    $lib->debug1(__FILE__, __LINE__, "insertRecord: y = %d",      $y);
 
-    $sql = sprintf("insert into point (name, x, y) values ($1, $2, $3)");
-    $lib->debug_sql1(__FILE__, __FUNCTION__, __LINE__, $sql);
+    if (!isset($name))
+        $lib->debug1(__FILE__, __LINE__, "name is not set");
 
-    $params = array($name, $x, $y);
-    $lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $params);
+    if (!isset($x))
+        $lib->debug1(__FILE__, __LINE__, "x is not set");
 
-    if (!$pg->sql($sql, $params))
+    if (!isset($y))
+        $lib->debug1(__FILE__, __LINE__, "y is not set");
+
+    $lib->debug2(__FILE__, __LINE__, "bookmark");
+
+    $format = 'insert into point (name, x, y) values (\'%s\', %d, %d)';
+    $insert = sprintf($format, $name, $x, $y);
+
+    $lib->debug2(__FILE__, __LINE__, "bookmark");
+
+    if (!$pg->sql($insert))
     {
+        $lib->debug1(__FILE__, __LINE__, "SQL Error: %s", $pg->getLastError());
         printf("{\n");
-        printf("\"status\":   \"FAILED\",\n");
-        printf("\"message\":  \"SQL Error: %s\"\n", $pg->getLastError());
+        printf("\"status\":                         \"error\",\n");
+        printf("\"message\":                        \"SQL Error: %s\"\n", $pg->getLastError());
         printf("}\n");
         $pg->logoff();
-
         exit();
     }
 
-    allRecords();
+    $lib->debug2(__FILE__, __LINE__, "bookmark");
+    printf("{\n");
+    printf("\"status\":                         \"success\",\n");
+    printf("\"message\":                        \"Record successfully inserted!\"\n");
+    printf("}\n");
+    $pg->logoff();
 }
 
 /**
  * @brief Update record in point table identified by $id
- * @param $id
- * @param $name
- * @param $x
- * @param $y
  * @return void
+ *
+ * WORKING!
+ *
  */
-function updateRecord($id, $name, $x, $y)
+function updateRecord()
 {
-    global $lib, $pg;
+    global $lib, $pg, $id, $name, $x, $y;
 
-    $sql = sprintf("update point set name = $1, x = $2, y = $3 where id = $4");
-    $lib->debug_sql1(__FILE__, __FUNCTION__, __LINE__, $sql);
-    $params = array($name, $x, $y, $id);
-    $lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $params);
+    $lib->debug1(__FILE__, __LINE__, "updateRecord: id = %d", $id);
+    $lib->debug1(__FILE__, __LINE__, "updateRecord: name = %s",   $name);
+    $lib->debug1(__FILE__, __LINE__, "updateRecord: x = %d",      $x);
+    $lib->debug1(__FILE__, __LINE__, "updateRecord: y = %d",      $y);
 
-    if (!$pg->sql($sql, $params))
+    if (!isset($id))
+        $lib->debug1(__FILE__, __LINE__, "id is not set");
+    
+    if (!isset($name))
+        $lib->debug1(__FILE__, __LINE__, "name is not set");
+
+    if (!isset($x))
+        $lib->debug1(__FILE__, __LINE__, "x is not set");
+
+    if (!isset($y))
+        $lib->debug1(__FILE__, __LINE__, "y is not set");
+
+    $format = 'update point set name = \'%s\', x = %d, y = %d where id = %d';
+    $update = sprintf($format, $name, $x, $y, $id);
+
+    if (!$pg->sql($update))
     {
+        $lib->debug1(__FILE__, __LINE__, "SQL Error: %s", $pg->getLastError());
         printf("{\n");
-        printf("\"status\":  \"FAILED\",\n");
-        printf("\"message\": \"SQL Error: %s\"\n", $pg->getLastError());
+        printf("\"status\":                         \"error\",\n");
+        printf("\"message\":                        \"SQL Error: %s\"\n", $pg->getLastError());
         printf("}\n");
         $pg->logoff();
 
         exit();
     }
 
-    allRecords();
+    printf("{\n");
+    printf("\"status\":                         \"success\",\n");
+    printf("\"message\":                        \"Record successfully updated!\"\n");
+    printf("}\n");
+    $pg->logoff();
 }
 
 /**
  * @brief Delete a record identified by $id from the point table.
- * @param $id
  * @return void
  */
-function deleteRecord($id)
+function deleteRecord()
 {
-    global $lib, $pg;
+    global $lib, $pg, $id;
 
-    $sql = sprintf("delete from point where id = $1");
-    $lib->debug_sql1(__FILE__, __FUNCTION__, __LINE__, $sql);
-    $params = array($id);
-    $lib->debug_r1(__FILE__, __FUNCTION__, __LINE__, $params);
+    $lib->debug1(__FILE__, __LINE__, "In deleteRecord(%d) method", $id);
 
-    $params = array();
-    $params[0] = $id;
-
-    if (!$pg->sql($sql, $params))
+    if (!$pg->sql("delete from point where id = %d", $id))
     {
+        $lib->debug1(__FILE__, __LINE__, "SQL Error: %s", $pg->getLastError());
         printf("{\n");
-        printf("\"status\":  \"FAILED\",\n");
-        printf("\"message\": \"SQL Error: %s\"\n", $pg->getLastError());
+        printf("\"status\":                         \"error\",\n");
+        printf("\"message\":                        \"SQL Error: %s\"\n", $pg->getLastError());
         printf("}\n");
         $pg->logoff();
 
@@ -309,29 +528,5 @@ function deleteRecord($id)
     allRecords();
 }
 
-switch ($action)
-{
-    case 'get':
-        getRecord($id);
-        break;
-    case 'all':
-        allRecords();
-        break;
-    case 'insert':
-        insertRecord($name, $x, $y);
-        break;
-    case 'update':
-        updateRecord($id, $name, $x, $y);
-        break;
-    case 'delete':
-        deleteRecord($id);
-        break;
-    default:
-        printf("{\n");
-        printf("\"status\":  \"FAILED\",\n");
-        printf("\"message\": \"Invalid action: %s\"\n", $action);
-        printf("}\n");
-        $pg->logoff();
-        exit();
-        break;
-}
+$lib->debug1(__FILE__, __LINE__, "Ready process action: %s\n", $action);
+

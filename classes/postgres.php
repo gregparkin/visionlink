@@ -72,14 +72,14 @@ class postgres extends library
 			$this->from_tz = $_SESSION['local_timezone_name'];
 		}
 
-		$this->debug_start('postgres.html');
+		$this->debug_start('postgres.txt');
 		$this->debug_on();
 
-		$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Trying logon()");
+		$this->debug1(__FILE__, __LINE__, "Trying logon()");
 
 		if ($this->logon($database) == false)
 		{
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Cannot logon to %s", $database);
+			$this->debug1(__FILE__, __LINE__, "Cannot logon to %s", $database);
 		}
 	}
 
@@ -105,9 +105,10 @@ class postgres extends library
 	 */
 	public function __set($name, $value)
 	{
-		$this->debug5(__FILE__, __FUNCTION__, __LINE__, "postgres set: %s = %s", $name, $value);
+		$this->debug5(__FILE__, __LINE__, "postgres set: %s = %s", $name, $value);
 
-		$this->data[$name] = $value;
+		if (strlen($name) > 0)
+			$this->data[$name] = $value;
 	}
 
 	/** @fn __get($name)
@@ -118,7 +119,7 @@ class postgres extends library
 	 */
 	public function __get($name)
 	{
-		$this->debug1(__FILE__, __FUNCTION__, __LINE__, "postgres get: %s", $name);
+		$this->debug1(__FILE__, __LINE__, "postgres get: %s", $name);
 
 		if (!$this->data)
 		{
@@ -163,18 +164,18 @@ class postgres extends library
 	{
 		$filename = "../private/$database";
 
-		$this->debug1(__FILE__, __FUNCTION__, __LINE__, "read_private_file(%s), filename = %s", $database, $filename);
+		$this->debug1(__FILE__, __LINE__, "read_private_file(%s), filename = %s", $database, $filename);
 
 		if (file_exists($filename))
 		{
 			if (($fp = fopen($filename, "r")) === false)
 			{
-				$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Cannot open for read: %s", $filename);
-				$this->dbErrMsg = sprintf("%s %s %s: Cannot open for read: %s", __FILE__, __FUNCTION__, __LINE__, $filename);
+				$this->debug1(__FILE__, __LINE__, "Cannot open for read: %s", $filename);
+				$this->dbErrMsg = sprintf("%s %s %s: Cannot open for read: %s", __FILE__, __LINE__, $filename);
 				return false;
 			}
 
-			$this->debug2(__FILE__, __FUNCTION__, __LINE__, "private file opened: %s", $filename);
+			$this->debug2(__FILE__, __LINE__, "private file opened: %s", $filename);
 
 			while (($buffer = fgets($fp, 2048)) !== false)
 			{
@@ -209,15 +210,15 @@ class postgres extends library
 
 			fclose($fp);
 
-			$this->debug5(__FILE__, __FUNCTION__, __LINE__, "HOST:%s PORT:%s DBNAME:%s USER:%s PASSWORD=%s",
+			$this->debug5(__FILE__, __LINE__, "HOST:%s PORT:%s DBNAME:%s USER:%s PASSWORD=%s",
 				$this->host, $this->port, $this->dbname, $this->user, $this->password);
 
 			$this->last_return = true;
 			return true;
 		}
 
-		$this->debug1(__FILE__, __FUNCTION__, __LINE__, "File does not exist: %s", $filename);
-		$this->dbErrMsg = sprintf("%s %s %s: File does not exist: %s", __FILE__, __FUNCTION__, __LINE__, $filename);
+		$this->debug1(__FILE__, __LINE__, "File does not exist: %s", $filename);
+		$this->dbErrMsg = sprintf("%s %s %s: File does not exist: %s", __FILE__, __LINE__, $filename);
 
 		$this->last_return = false;
 		return false;
@@ -236,7 +237,7 @@ class postgres extends library
 
 		if (!$this->read_private_file($database))
 		{
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Error reading the %s configuration file.", $database);
+			$this->debug1(__FILE__, __LINE__, "Error reading the %s configuration file.", $database);
 			$this->last_return = false;
 			return false;
 		}
@@ -246,18 +247,18 @@ class postgres extends library
 		$dbname = "dbname = $this->dbname";
 		$credentials = "user = $this->user password=$this->password";
 
-		$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Host: %s Port: %s DB: %s %s", $host, $port, $dbname, $credentials);
+		$this->debug1(__FILE__, __LINE__, "Host: %s Port: %s DB: %s %s", $host, $port, $dbname, $credentials);
 
 		$this->conn = pg_connect("$host $port $dbname $credentials");
 
 		if (!$this->conn)
 		{
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Unable to open database: %s", $dbname);
+			$this->debug1(__FILE__, __LINE__, "Unable to open database: %s", $dbname);
 			$this->last_return = false;
 			return false;
 		}
 
-		$this->debug5(__FILE__, __FUNCTION__, __LINE__, "Connected!");
+		$this->debug5(__FILE__, __LINE__, "Connected!");
 		//$this->setup_new_date_format();   // Changes default date format to: MM/DD/YYYY HH24:MI
 		$this->last_return = true;
 		return true;
@@ -283,23 +284,23 @@ class postgres extends library
 	}
 
 	/**
-	 * @param $sql      SQL with $1, $2, etc.
-	 * @param $params   param values used with the pg_prepare
+	 * @brief Format and execute the SQL
 	 * @return bool
 	 */
-	public function sql($sql, $params)
+	public function sql()
 	{
-		$this->sql_statement = $sql;
+		$this->debug1(__FILE__, __LINE__, "running sql() method");
 
-		$this->debug_sql1(__FILE__, __FUNCTION__, __LINE__, "%s", $this->sql_statement);
-		$this->debug1(__FILE__, __FUNCTION__, __LINE__, "params");
-		$this->debug_r1(__FILE__, __FUNCTION__, __LINE__, $params);
+		$argv = func_get_args();
+		$this->sql_statement = vsprintf(array_shift($argv), array_values($argv));
 
-		$this->result_set  = pg_query_params($this->conn, $this->sql_statement, $params);
+		$this->debug_sql1(__FILE__, __LINE__, "%s", $this->sql_statement);
+
+		$this->result_set  = pg_query($this->conn, $this->sql_statement);
 
 		if (!$this->result_set )
 		{
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "pg_execute failed! - %s", pg_last_error());
+			$this->debug1(__FILE__, __LINE__, "pg_execute failed! - %s", pg_last_error());
 			$this->last_return = false;
 			return false;
 		}
@@ -316,10 +317,10 @@ class postgres extends library
 		{
 			$this->is_select_statement = true;
 			$this->rows_affected = pg_num_rows($this->result_set);
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Number of rows: %d\n", $this->rows_affected);
+			$this->debug1(__FILE__, __LINE__, "Number of rows: %d\n", $this->rows_affected);
 		}
 
-		$this->debug1(__FILE__, __FUNCTION__, __LINE__,
+		$this->debug1(__FILE__, __LINE__,
 			"is_select_statement = %s", $this->is_select_statement == true ? "true" : "false");
 
 		$this->last_return = true;
@@ -340,14 +341,14 @@ class postgres extends library
 	{
 		if ($this->is_select_statement === false)
 		{
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Previous SQL was not a SELECT statement.");
+			$this->debug1(__FILE__, __LINE__, "Previous SQL was not a SELECT statement.");
 			$this->last_return = false;
 			return false;
 		}
 
 		if (!$this->conn)
 		{
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Not connected to %s", $this->dbname);
+			$this->debug1(__FILE__, __LINE__, "Not connected to %s", $this->dbname);
 			$this->last_return = false;
 			return false;
 		}
@@ -374,7 +375,7 @@ class postgres extends library
 			$this->data[$k] = $v;
 		}
 
-		$this->debug_r1(__FILE__, __FUNCTION__, __LINE__, $row);
+		$this->debug_r1(__FILE__, __LINE__, $row, "row");
 
 		$this->last_return = true;
 		return true;
@@ -391,7 +392,7 @@ class postgres extends library
 
 		if (!$this->conn)
 		{
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Not connected to database %s.", $this->dbname);
+			$this->debug1(__FILE__, __LINE__, "Not connected to database %s.", $this->dbname);
 			$this->debug_dump_stack();
 			$this->last_return = 0;
 			return false;
@@ -410,7 +411,7 @@ class postgres extends library
 	{
 		if (!$this->conn)
 		{
-			$this->debug1(__FILE__, __FUNCTION__, __LINE__, "Not connected to database %s.", $this->dbname);
+			$this->debug1(__FILE__, __LINE__, "Not connected to database %s.", $this->dbname);
 			$this->debug_dump_stack();
 			$this->last_return = 0;
 			return false;
