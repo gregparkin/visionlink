@@ -8,23 +8,6 @@ $lib = new library();        // classes/library.php
 
 $lib->debug_start('index.txt');
     date_default_timezone_set('America/Denver');
-
-// Parse QUERY_STRING if it exists
-$my_request = array();
-$method = "all";
-
-if (isset($_SERVER['QUERY_STRING']))
-{
-    parse_str($_SERVER['QUERY_STRING'], $my_request);  // Parses URL parameter options into an array called $my_request
-    $input_count = count($my_request);                        // Get the count of the number of $my_request array elements.
-    $lib->debug1(__FILE__, __LINE__, "input_count = %d", $input_count);
-    $lib->debug_r1(__FILE__, __LINE__, $my_request, "my_request");
-
-    if (isset($my_request['method']))
-        $method = $my_request['method'];
-}
-
-$lib->debug1(__FILE__, __LINE__, "method = %s", $method);
 ?>
 
 <!DOCTYPE html>
@@ -43,35 +26,12 @@ $lib->debug1(__FILE__, __LINE__, "method = %s", $method);
 
     let base_url = window.location.origin;
 
-    function reset() {
-        //window.location.reload('visionlink.test');
-        //window.location.replace('visionlink.test');
-        // window.location.assign(‘https://www.ExampleURL.com/’);
-        window.location.assign('http://visionlink.test');
-    }
-
-    function nearest() {
-        //base_url = base_url + '?method=nearest';
-        window.location.assign('http://visionlink.test?method=nearest');
-        //window.location.reload(base_url);
-    }
-
-    function farthest() {
-        //base_url = base_url + '?method=farthest';
-        window.location.assign('http://visionlink.test?method=farthest');
-        //window.location.reload(base_url);
-    }
-
-    document.getElementById("myReset").onclick = reset;
-    document.getElementById("myNearest").onclick = nearest;
-    document.getElementById("myFarthest").onclick = farthest;
-
     let grid = new w2grid({
         name:     'grid',
         theme:    'metro',
         url:      'ajax_server.php',
         method:   'POST',
-        postData: {action: '<?php echo $method; ?>',},
+        postData: {action: 'all',},
         box:      '#grid',
         recid:    '1',
         show: {
@@ -105,7 +65,12 @@ $lib->debug1(__FILE__, __LINE__, "method = %s", $method);
             var name = grid.get(sel[0])['name'];
             var x = grid.get(sel[0])['x'];
             var y = grid.get(sel[0])['y'];
-            updateRecordPopup(id, name, x, y);
+
+            let val = 'http://visionlink.test/edit_points.php';
+            let url = val.concat("?id=", id, "&name=", name, "&x=", x, "&y=", y);
+            location.href = url;
+
+            //updateRecordPopup(id, name, x, y);
         },
         onDelete: function (event) {
             console.log('delete has default behavior');
@@ -197,16 +162,57 @@ $lib->debug1(__FILE__, __LINE__, "method = %s", $method);
             });
     }
 
+    // This is the Edit screen
     window.updateRecordPopup = function(id, name, x, y) {
+
+        let val = 'http://visionlink.test/ajax_server.php?action=distance';
+        let url = val.concat("&id=", id, "&name=", name, "&x=", x, "&y=", y);
+
+        let distanceData;
+
+        fetch(url)
+            .then((response) => response.json())
+            .then((data) => distanceData = data);
+
+        let html1 =
+            '<div class="w2ui-page page-0">' +
+            ' <div class="w2ui-label">ID:</div>' +
+            '   <input name="id" type="test" size="25" disabled/>' +
+            ' </div>' +
+            ' <div class="w2ui-label">Name:</div>' +
+            '   <input name="name" type="text" size="35"/>' +
+            ' </div>' +
+            ' <div class="w2ui-label">X:</div>' +
+            '   <input name="x" type="text" size="35"/>' +
+            ' </div>' +
+            ' <div class="w2ui-label">Y:</div>' +
+            '   <input name="y" type="text" size="35"/>' +
+            ' </div>';
+
+        // Loop through the return data and add a table to the form
+        // for nearest 1.4 values.
+
+
+
+        let html3 =
+            '</div>' +
+            '<div class="w2ui-buttons">'+
+            '	<input type="button" value="Reset" name="reset">'+
+            '	<input type="button" value="Save" name="save">'+
+            '</div>';
+
+        let html = html1 - html3;
+
         if (!w2ui.foo) {
             new w2form({
-                name: 'update_record',
+                name: 'edit_popup',
                 style: 'border: 0px; background-color: transparent;',
+                formHTML: html,
                 fields: [
-                    {field: 'id', type: 'int', required: true, readonly: false, html: {label: 'ID'}},
-                    {field: 'name', type: 'text', required: true, html: {label: 'Name'}},
-                    {field: 'x', type: 'text', required: true, html: {label: 'X'}},
-                    {field: 'y', type: 'text', required: true, html: {label: 'Y'}}
+                    {field: 'id', type: 'int', required: false},
+                    {field: 'name', type: 'text', required: true},
+                    {field: 'x', type: 'text', required: true},
+                    {field: 'y', type: 'text', required: true}
                 ],
                 record: {
                     id: id,
@@ -255,7 +261,7 @@ $lib->debug1(__FILE__, __LINE__, "method = %s", $method);
             });
         }
         w2popup.open({
-            title: 'Update Record',
+            title: 'Edit Record',
             body: '<div id="form" style="width: 100%; height: 100%;"></div>',
             style: 'padding: 15px 0px 0px 0px',
             width: 500,
@@ -266,18 +272,11 @@ $lib->debug1(__FILE__, __LINE__, "method = %s", $method);
                 w2ui.update_record.resize();
             }
         })
-            .then((event) => {
-                w2ui.update_record.render('#form')
-            });
+            .then((evt) => {
+                console.log('popup ready')
+            })
     }
 </script>
-<div style="width: 800px; height: 400px;">
-    <br>
-    <center>
-        <button id='myReset' onclick="reset()">Reset</button>
-        <button id='myNearest' onclick="nearest()">Nearest points at distance 1.4</button>
-        <button id='myFarthest' onclick="farthest()">Farthest points at distance 2.2</button>
-    </center>
-</div>
+
 </body>
 </html>
