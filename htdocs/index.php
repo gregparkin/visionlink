@@ -8,7 +8,14 @@ $lib = new library();        // classes/library.php
 
 $lib->debug_start('index.txt');
     date_default_timezone_set('America/Denver');
+
+$lib->debug_r1(__FILE__, __LINE__, $_POST, "_POST");
+$lib->debug_r1(__FILE__, __LINE__, $_GET, "_GET");
+$lib->debug_r1(__FILE__, __LINE__, $_REQUEST, "_REQUEST");
+$lib->debug_r1(__FILE__, __LINE__, $_SERVER, "_SERVER");
+$lib->debug_r1(__FILE__, __LINE__, $_SESSION, "_SESSION");
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -66,8 +73,9 @@ $lib->debug_start('index.txt');
             var x = grid.get(sel[0])['x'];
             var y = grid.get(sel[0])['y'];
 
-            let val = 'http://visionlink.test/edit_points.php';
+            let val = '/edit_points.php';
             let url = val.concat("?id=", id, "&name=", name, "&x=", x, "&y=", y);
+
             location.href = url;
 
             //updateRecordPopup(id, name, x, y);
@@ -165,7 +173,7 @@ $lib->debug_start('index.txt');
     // This is the Edit screen
     window.updateRecordPopup = function(id, name, x, y) {
 
-        let val = 'http://visionlink.test/ajax_server.php?action=distance';
+        let val = '/ajax_server.php?action=distance';
         let url = val.concat("&id=", id, "&name=", name, "&x=", x, "&y=", y);
 
         let distanceData;

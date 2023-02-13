@@ -1,5 +1,5 @@
 ==========================================================================================================================
-Debug file: ../debug//postgres.txt created on Fri, 10 Feb 2023 18:45:21 -0700. Mode: WRITE.
+Debug file: ../debug//postgres.txt created on Mon, 13 Feb 2023 12:55:10 -0700. Mode: WRITE.
 
 d1: library.php 0: 1910
 d1: library.php 0: 1914
@@ -12,13 +12,6 @@ d2: postgres.php 178: private file opened: ../private/visionlink
 d5: postgres.php 213: HOST:127.0.0.1 PORT:5432 DBNAME:visionlink USER:visionlink PASSWORD=trialtask
 d1: postgres.php 250: Host: host = 127.0.0.1 Port: port = 5432 DB: dbname = visionlink user = visionlink password=trialtask
 d5: postgres.php 261: Connected!
-d1: postgres.php 292: running sql() method
-s1: postgres.php 297 SQL:
-delete from 
-  point 
-where 
-  id = 29
-d1: postgres.php 323: is_select_statement = false
 d1: postgres.php 292: running sql() method
 s1: postgres.php 297 SQL:
 select 
@@ -38,6 +31,16 @@ Array
     [x] => 0
     [y] => 1
 )
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: id
 d1: postgres.php 122: postgres get: name
 d1: postgres.php 122: postgres get: x
@@ -50,6 +53,16 @@ Array
     [x] => 1
     [y] => 0
 )
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: id
 d1: postgres.php 122: postgres get: name
 d1: postgres.php 122: postgres get: x
@@ -62,6 +75,16 @@ Array
     [x] => 1
     [y] => 1
 )
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: id
 d1: postgres.php 122: postgres get: name
 d1: postgres.php 122: postgres get: x
@@ -74,6 +97,16 @@ Array
     [x] => 2
     [y] => 2
 )
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: id
 d1: postgres.php 122: postgres get: name
 d1: postgres.php 122: postgres get: x
@@ -86,6 +119,16 @@ Array
     [x] => 3
     [y] => 3
 )
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: id
 d1: postgres.php 122: postgres get: name
 d1: postgres.php 122: postgres get: x

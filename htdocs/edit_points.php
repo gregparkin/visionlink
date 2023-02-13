@@ -174,11 +174,13 @@ if (!$pg->sql("select * from point order by name"))
     exit();
 }
 
-$nearest  = $p1 = null;
-$farthest = $p2 = null;
-
+$nearest  = 0.;
+$farthest = 0.;
+$top = $p = null;
+$row_count = 0;
 while ($pg->fetch())
 {
+    $row_count++;
     // $x and $y are values we are editing.
     $distance  = newPrecision(calculateDistance($x, $y, $pg->x, $pg->y), 1);
 
@@ -187,51 +189,42 @@ while ($pg->fetch())
     $lib->debug1(__FILE__, __LINE__, "newPrecision(calculateDistance(%f, %f, %f, %f), 1) = %f",
         $x, $y, $pg->x, $pg->y, newPrecision(calculateDistance($x, $y, $pg->x, $pg->y), 1));
 
-    if ($distance == 1.4)
+    if ($top === null)
     {
-        if ($nearest === null)
-        {
-            $nearest = $p1 = new data_node();
-            $lib->debug1(__FILE__, __LINE__, "bookmark");
-        }
-        else
-        {
-           $p1->next = new data_node();
-           $p1 = $p1->next;
-           $lib->debug1(__FILE__, __LINE__, "bookmark");
-        }
-
-        $lib->debug1(__FILE__, __LINE__, "bookmark");
-        $p1->id   = $pg->id;
-        $p1->name = $pg->name;
-        $p1->x    = $pg->x;
-        $p1->y    = $pg->y;
-        $lib->debug1(__FILE__, __LINE__, "bookmark");
+        $top = new data_node();
+        $p = $top;
+    }
+    else
+    {
+        $p->next = new data_node();
+        $p = $p->next;
     }
 
-    if ($distance == 2.2)
-    {
-        $lib->debug1(__FILE__, __LINE__, "bookmark");
+    $p->distance = $distance;
+    $p->id       = $pg->id;
+    $p->name     = $pg->name;
+    $p->x        = $pg->x;
+    $p->y        = $pg->y;
 
-        if ($farthest === null)
-        {
-            $farthest = $p2 = new data_node();
-        }
-        else
-        {
-            $p2->next = new data_node();
-            $p2 = $p2->next;
-        }
+    if ($nearest == 0)
+        $nearest = $distance;
+    else if ($distance != 0 && $distance < $nearest)
+        $nearest = $distance;
 
-        $lib->debug1(__FILE__, __LINE__, "bookmark");
-        $p2->id   = $pg->id;
-        $p2->name = $pg->name;
-        $p2->x    = $pg->x;
-        $p2->y    = $pg->y;
-    }
+    if ($distance != 0 && $distance > $farthest)
+        $farthest = $distance;
+
+    $lib->debug1(__FILE__, __LINE__, "farthest: %.1f  nearest: %.1f", $farthest, $nearest);
+
+//    for ($p=$top; $p!=null; $p=$p->next)
+//    {
+//        $lib->debug1(__FILE__, __LINE__, "distance: %.2f, id: %d, name: %s, x: %d, y: %d",
+//            $p->distance, $p->id, $p->name, $p->x, $p->y);
+//    }
+
 }
 
-$lib->debug1(__FILE__, __LINE__, "bookmark");
+$lib->debug1(__FILE__, __LINE__, "row_count = %d", $row_count);
 
 ?>
 <!DOCTYPE html>
@@ -241,6 +234,11 @@ $lib->debug1(__FILE__, __LINE__, "bookmark");
     <link rel="stylesheet" type="text/css" href="https://rawgit.com/vitmalina/w2ui/master/dist/w2ui.min.css">
     <script type="text/javascript" src="js/jquery.js"></script>
     <script>
+        function cancel()
+        {
+            location.href='/';
+        }
+
         function saveData()
         {
             let id = document.getElementById("id").value;
@@ -290,7 +288,7 @@ $lib->debug1(__FILE__, __LINE__, "bookmark");
                 }
             });
 
-            location.href='http://visionlink.test';
+            location.href='/';
         }
     </script>
 </head>
@@ -321,36 +319,13 @@ $lib->debug1(__FILE__, __LINE__, "bookmark");
             </div>
             <div class="w2ui-buttons" style="align-content: center">
                 <button name="save" class="w2ui-btn w2ui-btn-blue" onclick="saveData()" tabindex="4">Save</button>
-                <button name="cancel" class="w2ui-btn " onclick="location.href='http://visionlink.test'" tabindex="5">Cancel</button>
+                <button name="cancel" class="w2ui-btn " onclick="cancel()" tabindex="5">Cancel</button>
             </div>
         </div>
         <br>
         <table>
             <tr>
-                <td colspan="4"><u><b>Nearest points to 1.4</b></u></td>
-            </tr>
-            <tr>
-            <td style="width:20%" align="center">ID</td>
-            <td style="width:20%" align="center">Name</td>
-            <td style="width:20%" align="center">X</td>
-            <td style="width:20%" align="center">Y</td>
-            </tr>
-            <?php
-            for ($p1=$nearest; $p1!=NULL; $p1=$p1->next)
-            {
-                printf("<tr>\n");
-                printf("<td><center>%d</center></td>", $p1->id);
-                printf("<td><center>%s</center></td>", $p1->name);
-                printf("<td><center>%d</center></td>", $p1->x);
-                printf("<td><center>%d</center></td>", $p1->y);
-                printf("</tr>\n");
-            }
-            ?>
-        </table>
-        <br>
-        <table>
-            <tr>
-                <td colspan="4"><u><b>Farthest points to 2.2</b></u></td>
+                <td colspan="4"><b>Nearest points at distance <?php printf("%.1f", $nearest); ?>:</b></td>
             </tr>
             <tr>
                 <td style="width:20%" align="center">ID</td>
@@ -359,13 +334,42 @@ $lib->debug1(__FILE__, __LINE__, "bookmark");
                 <td style="width:20%" align="center">Y</td>
             </tr>
             <?php
-            for ($p1=$farthest; $p1!=NULL; $p1=$p1->next)
+            for ($p=$top; $p!=NULL; $p=$p->next)
             {
+                if ($p->distance != $nearest)
+                    continue;
+
                 printf("<tr>\n");
-                printf("<td><center>%d</center></td>", $p1->id);
-                printf("<td><center>%s</center></td>", $p1->name);
-                printf("<td><center>%d</center></td>", $p1->x);
-                printf("<td><center>%d</center></td>", $p1->y);
+                printf("<td><center>%d</center></td>", $p->id);
+                printf("<td><center>%s</center></td>", $p->name);
+                printf("<td><center>%d</center></td>", $p->x);
+                printf("<td><center>%d</center></td>", $p->y);
+                printf("</tr>\n");
+            }
+            ?>
+        </table>
+        <br>
+        <table>
+            <tr>
+                <td colspan="4"><b>Farthest points at distance <?php printf("%.1f", $farthest); ?>:</b></td>
+            </tr>
+            <tr>
+                <td style="width:20%" align="center">ID</td>
+                <td style="width:20%" align="center">Name</td>
+                <td style="width:20%" align="center">X</td>
+                <td style="width:20%" align="center">Y</td>
+            </tr>
+            <?php
+            for ($p=$top; $p!=NULL; $p=$p->next)
+            {
+                if ($p->distance != $farthest)
+                    continue;
+
+                printf("<tr>\n");
+                printf("<td><center>%d</center></td>", $p->id);
+                printf("<td><center>%s</center></td>", $p->name);
+                printf("<td><center>%d</center></td>", $p->x);
+                printf("<td><center>%d</center></td>", $p->y);
                 printf("</tr>\n");
             }
             ?>

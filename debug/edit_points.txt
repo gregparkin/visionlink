@@ -1,17 +1,17 @@
 ==========================================================================================================================
-Debug file: ../debug//edit_points.txt created on Fri, 10 Feb 2023 18:44:30 -0700. Mode: WRITE.
+Debug file: ../debug//edit_points.txt created on Mon, 13 Feb 2023 12:55:10 -0700. Mode: WRITE.
 
-d1: edit_points.php 55: Param: id = 29
-d1: edit_points.php 61: Param: name = X
-d1: edit_points.php 67: Param: x = 2
-d1: edit_points.php 73: Param: y = 7
+d1: edit_points.php 55: Param: id = 24
+d1: edit_points.php 61: Param: name = A
+d1: edit_points.php 67: Param: x = 0
+d1: edit_points.php 73: Param: y = 1
 r1: edit_points.php 96: _REQUEST
 Array
 (
-    [id] => 29
-    [name] => X
-    [x] => 2
-    [y] => 7
+    [id] => 24
+    [name] => A
+    [x] => 0
+    [y] => 1
 )
 r1: edit_points.php 141: json
 r1: edit_points.php 142: _POST
@@ -21,18 +21,18 @@ Array
 r1: edit_points.php 143: _GET
 Array
 (
-    [id] => 29
-    [name] => X
-    [x] => 2
-    [y] => 7
+    [id] => 24
+    [name] => A
+    [x] => 0
+    [y] => 1
 )
 r1: edit_points.php 144: _REQUEST
 Array
 (
-    [id] => 29
-    [name] => X
-    [x] => 2
-    [y] => 7
+    [id] => 24
+    [name] => A
+    [x] => 0
+    [y] => 1
 )
 r1: edit_points.php 145: _SERVER
 Array
@@ -59,16 +59,16 @@ Array
     [CONTEXT_DOCUMENT_ROOT] => /Users/gregparkin/www/visionlink.test/htdocs
     [SERVER_ADMIN] => you@example.com
     [SCRIPT_FILENAME] => /Users/gregparkin/www/visionlink.test/htdocs/edit_points.php
-    [REMOTE_PORT] => 52564
+    [REMOTE_PORT] => 51098
     [GATEWAY_INTERFACE] => CGI/1.1
     [SERVER_PROTOCOL] => HTTP/1.1
     [REQUEST_METHOD] => GET
-    [QUERY_STRING] => id=29&name=X&x=2&y=7
-    [REQUEST_URI] => /edit_points.php?id=29&name=X&x=2&y=7
+    [QUERY_STRING] => id=24&name=A&x=0&y=1
+    [REQUEST_URI] => /edit_points.php?id=24&name=A&x=0&y=1
     [SCRIPT_NAME] => /edit_points.php
     [PHP_SELF] => /edit_points.php
-    [REQUEST_TIME_FLOAT] => 1676079870.4791
-    [REQUEST_TIME] => 1676079870
+    [REQUEST_TIME_FLOAT] => 1676318110.466
+    [REQUEST_TIME] => 1676318110
 )
 r1: edit_points.php 146: _SESSION
 Array
@@ -90,22 +90,27 @@ Array
     [debug_level5] => Y
     [debug_path] => ../debug/
     [debug_mode] => w
+    [HTTP_REFERER] => http//visionlink.test
+    [BASE_URL] => http://visionlink.test
 )
-d1: edit_points.php 148: FINAL: id = 29
-d1: edit_points.php 149: FINAL: name = X
-d1: edit_points.php 150: FINAL: x = 2
-d1: edit_points.php 151: FINAL: y = 7
+d1: edit_points.php 148: FINAL: id = 24
+d1: edit_points.php 149: FINAL: name = A
+d1: edit_points.php 150: FINAL: x = 0
+d1: edit_points.php 151: FINAL: y = 1
 d1: edit_points.php 166: In getDistances() method
-d1: edit_points.php 185: calculateDistance(2.000000, 7.000000, 0.000000, 1.000000) = 6.324555
-d1: edit_points.php 187: newPrecision(calculateDistance(2.000000, 7.000000, 0.000000, 1.000000), 1) = 6.300000
-d1: edit_points.php 185: calculateDistance(2.000000, 7.000000, 1.000000, 0.000000) = 7.071068
-d1: edit_points.php 187: newPrecision(calculateDistance(2.000000, 7.000000, 1.000000, 0.000000), 1) = 7.000000
-d1: edit_points.php 185: calculateDistance(2.000000, 7.000000, 1.000000, 1.000000) = 6.082763
-d1: edit_points.php 187: newPrecision(calculateDistance(2.000000, 7.000000, 1.000000, 1.000000), 1) = 6.000000
-d1: edit_points.php 185: calculateDistance(2.000000, 7.000000, 2.000000, 2.000000) = 5.000000
-d1: edit_points.php 187: newPrecision(calculateDistance(2.000000, 7.000000, 2.000000, 2.000000), 1) = 5.000000
-d1: edit_points.php 185: calculateDistance(2.000000, 7.000000, 3.000000, 3.000000) = 4.123106
-d1: edit_points.php 187: newPrecision(calculateDistance(2.000000, 7.000000, 3.000000, 3.000000), 1) = 4.100000
-d1: edit_points.php 185: calculateDistance(2.000000, 7.000000, 2.000000, 7.000000) = 0.000000
-d1: edit_points.php 187: newPrecision(calculateDistance(2.000000, 7.000000, 2.000000, 7.000000), 1) = 0.000000
-d1: edit_points.php 234: bookmark
+d1: edit_points.php 187: calculateDistance(0.000000, 1.000000, 0.000000, 1.000000) = 0.000000
+d1: edit_points.php 189: newPrecision(calculateDistance(0.000000, 1.000000, 0.000000, 1.000000), 1) = 0.000000
+d1: edit_points.php 217: farthest: 0.0  nearest: 0.0
+d1: edit_points.php 187: calculateDistance(0.000000, 1.000000, 1.000000, 0.000000) = 1.414214
+d1: edit_points.php 189: newPrecision(calculateDistance(0.000000, 1.000000, 1.000000, 0.000000), 1) = 1.400000
+d1: edit_points.php 217: farthest: 1.4  nearest: 1.4
+d1: edit_points.php 187: calculateDistance(0.000000, 1.000000, 1.000000, 1.000000) = 1.000000
+d1: edit_points.php 189: newPrecision(calculateDistance(0.000000, 1.000000, 1.000000, 1.000000), 1) = 1.000000
+d1: edit_points.php 217: farthest: 1.4  nearest: 1.0
+d1: edit_points.php 187: calculateDistance(0.000000, 1.000000, 2.000000, 2.000000) = 2.236068
+d1: edit_points.php 189: newPrecision(calculateDistance(0.000000, 1.000000, 2.000000, 2.000000), 1) = 2.200000
+d1: edit_points.php 217: farthest: 2.2  nearest: 1.0
+d1: edit_points.php 187: calculateDistance(0.000000, 1.000000, 3.000000, 3.000000) = 3.605551
+d1: edit_points.php 189: newPrecision(calculateDistance(0.000000, 1.000000, 3.000000, 3.000000), 1) = 3.600000
+d1: edit_points.php 217: farthest: 3.6  nearest: 1.0
+d1: edit_points.php 227: row_count = 5

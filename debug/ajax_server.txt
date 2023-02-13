@@ -1,16 +1,16 @@
 ==========================================================================================================================
-Debug file: ../debug//ajax_server.txt created on Fri, 10 Feb 2023 18:45:21 -0700. Mode: WRITE.
+Debug file: ../debug//ajax_server.txt created on Mon, 13 Feb 2023 12:55:07 -0700. Mode: WRITE.
 
 r1: ajax_server.php 92: _REQUEST
 Array
 (
-    [request] => {"limit":100,"offset":0,"action":"delete","id":"29"}
+    [request] => {"limit":100,"offset":0,"action":"all"}
 )
-d1: ajax_server.php 99: request: {"limit":100,"offset":0,"action":"delete","id":"29"}
-d1: ajax_server.php 124: _REQUEST: action = delete
+d1: ajax_server.php 99: request: {"limit":100,"offset":0,"action":"all"}
+d1: ajax_server.php 124: _REQUEST: action = all
 d1: ajax_server.php 125: _REQUEST: limit  = 100
 d1: ajax_server.php 126: _REQUEST: offset = 0
-d1: ajax_server.php 127: _REQUEST: id     = 29
+d1: ajax_server.php 127: _REQUEST: id     = 0
 d1: ajax_server.php 128: _REQUEST: name   = 
 d1: ajax_server.php 129: _REQUEST: x      = 0
 d1: ajax_server.php 130: _REQUEST: y      = 0
@@ -22,12 +22,12 @@ Array
 r1: ajax_server.php 151: _GET
 Array
 (
-    [request] => {"limit":100,"offset":0,"action":"delete","id":"29"}
+    [request] => {"limit":100,"offset":0,"action":"all"}
 )
 r1: ajax_server.php 152: _REQUEST
 Array
 (
-    [request] => {"limit":100,"offset":0,"action":"delete","id":"29"}
+    [request] => {"limit":100,"offset":0,"action":"all"}
 )
 r1: ajax_server.php 153: _SERVER
 Array
@@ -53,16 +53,16 @@ Array
     [CONTEXT_DOCUMENT_ROOT] => /Users/gregparkin/www/visionlink.test/htdocs
     [SERVER_ADMIN] => you@example.com
     [SCRIPT_FILENAME] => /Users/gregparkin/www/visionlink.test/htdocs/ajax_server.php
-    [REMOTE_PORT] => 52783
+    [REMOTE_PORT] => 51098
     [GATEWAY_INTERFACE] => CGI/1.1
     [SERVER_PROTOCOL] => HTTP/1.1
     [REQUEST_METHOD] => GET
-    [QUERY_STRING] => request=%7B%22limit%22%3A100%2C%22offset%22%3A0%2C%22action%22%3A%22delete%22%2C%22id%22%3A%2229%22%7D
-    [REQUEST_URI] => /ajax_server.php?request=%7B%22limit%22%3A100%2C%22offset%22%3A0%2C%22action%22%3A%22delete%22%2C%22id%22%3A%2229%22%7D
+    [QUERY_STRING] => request=%7B%22limit%22%3A100%2C%22offset%22%3A0%2C%22action%22%3A%22all%22%7D
+    [REQUEST_URI] => /ajax_server.php?request=%7B%22limit%22%3A100%2C%22offset%22%3A0%2C%22action%22%3A%22all%22%7D
     [SCRIPT_NAME] => /ajax_server.php
     [PHP_SELF] => /ajax_server.php
-    [REQUEST_TIME_FLOAT] => 1676079921.2896
-    [REQUEST_TIME] => 1676079921
+    [REQUEST_TIME_FLOAT] => 1676318107.4472
+    [REQUEST_TIME] => 1676318107
 )
 r1: ajax_server.php 154: _SESSION
 Array
@@ -84,15 +84,16 @@ Array
     [debug_level5] => Y
     [debug_path] => ../debug/
     [debug_mode] => w
+    [HTTP_REFERER] => http//visionlink.test
+    [BASE_URL] => http://visionlink.test
 )
-d1: ajax_server.php 156: FINAL: action = delete
+d1: ajax_server.php 156: FINAL: action = all
 d1: ajax_server.php 157: FINAL: limit = 100
 d1: ajax_server.php 158: FINAL: offset = 0
-d1: ajax_server.php 159: FINAL: id = 29
+d1: ajax_server.php 159: FINAL: id = 0
 d1: ajax_server.php 160: FINAL: name = 
 d1: ajax_server.php 161: FINAL: x = 0
 d1: ajax_server.php 162: FINAL: y = 0
-d1: ajax_server.php 489: In deleteRecord(29) method
 d1: ajax_server.php 290: In allRecords() method
 d1: ajax_server.php 324: SENDING: {"id":"24","name":"A","x":"0","y":"1"}
 d1: ajax_server.php 324: SENDING: {"id":"25","name":"B","x":"1","y":"0"}
