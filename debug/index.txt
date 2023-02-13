@@ -1,3 +1,74 @@
 ==========================================================================================================================
-Debug file: ../debug//index.txt created on Fri, 10 Feb 2023 18:44:33 -0700. Mode: WRITE.
+Debug file: ../debug//index.txt created on Mon, 13 Feb 2023 12:55:07 -0700. Mode: WRITE.
 
+r1: index.php 12: _POST
+Array
+(
+)
+r1: index.php 13: _GET
+Array
+(
+)
+r1: index.php 14: _REQUEST
+Array
+(
+)
+r1: index.php 15: _SERVER
+Array
+(
+    [HTTP_HOST] => visionlink.test
+    [HTTP_CONNECTION] => keep-alive
+    [HTTP_UPGRADE_INSECURE_REQUESTS] => 1
+    [HTTP_USER_AGENT] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
+    [HTTP_ACCEPT] => text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+    [HTTP_REFERER] => http://visionlink.test/edit_points.php?id=25&name=B&x=1&y=0
+    [HTTP_ACCEPT_ENCODING] => gzip, deflate
+    [HTTP_ACCEPT_LANGUAGE] => en-US,en;q=0.9
+    [HTTP_COOKIE] => PHPSESSID=qig7b3fg719es37te0b43738qe
+    [PATH] => /Users/gregparkin/.docker/bin:/Library/Frameworks/Python.framework/Versions/3.11/bin:.:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/opt/homebrew/opt/openssl@3/bin:/Users/gregparkin/istio-1.16.0/bin:/Users/gregparkin/bin:/apache2/bin:/php/bin:/usr/local/pgsql/bin:/usr/local/bin:/usr/local/pgsql/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.11/bin:.:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/opt/homebrew/opt/openssl@3/bin:/Users/gregparkin/istio-1.16.0/bin:/Users/gregparkin/bin:/apache2/bin:/php/bin:/usr/local/pgsql/bin:/usr/local/bin:/usr/local/pgsql/bin:/Applications/Visual Studio Code.app/Contents/Resources/app/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands:/Users/gregparkin/Library/Application Support/JetBrains/Toolbox/scripts:/Users/gregparkin/Library/Application Support/JetBrains/Toolbox/scripts
+    [SERVER_SIGNATURE] => 
+    [SERVER_SOFTWARE] => Apache/2.4.55 (Unix) PHP/8.2.2
+    [SERVER_NAME] => visionlink.test
+    [SERVER_ADDR] => 127.0.0.1
+    [SERVER_PORT] => 80
+    [REMOTE_ADDR] => 127.0.0.1
+    [DOCUMENT_ROOT] => /Users/gregparkin/www/visionlink.test/htdocs
+    [REQUEST_SCHEME] => http
+    [CONTEXT_PREFIX] => 
+    [CONTEXT_DOCUMENT_ROOT] => /Users/gregparkin/www/visionlink.test/htdocs
+    [SERVER_ADMIN] => you@example.com
+    [SCRIPT_FILENAME] => /Users/gregparkin/www/visionlink.test/htdocs/index.php
+    [REMOTE_PORT] => 51098
+    [GATEWAY_INTERFACE] => CGI/1.1
+    [SERVER_PROTOCOL] => HTTP/1.1
+    [REQUEST_METHOD] => GET
+    [QUERY_STRING] => 
+    [REQUEST_URI] => /
+    [SCRIPT_NAME] => /index.php
+    [PHP_SELF] => /index.php
+    [REQUEST_TIME_FLOAT] => 1676318107.1238
+    [REQUEST_TIME] => 1676318107
+)
+r1: index.php 16: _SESSION
+Array
+(
+    [HOST] => 127.0.0.1
+    [PORT] => 5432
+    [DBMS] => visionlink
+
+    [USER] => visionlink
+    [PASS] => trialtask
+
+    [DBNAME] => visionlink
+    [PASSWORD] => trialtask
+    [is_debug_on] => Y
+    [debug_level1] => Y
+    [debug_level2] => Y
+    [debug_level3] => Y
+    [debug_level4] => Y
+    [debug_level5] => Y
+    [debug_path] => ../debug/
+    [debug_mode] => w
+    [HTTP_REFERER] => http//visionlink.test
+    [BASE_URL] => http://visionlink.test
+)
