@@ -183,6 +183,7 @@ while ($pg->fetch())
     $row_count++;
     // $x and $y are values we are editing.
     $distance  = newPrecision(calculateDistance($x, $y, $pg->x, $pg->y), 1);
+    $no_rounding = calculateDistance($x, $y, $pg->x, $pg->y);
 
     $lib->debug1(__FILE__, __LINE__, "calculateDistance(%f, %f, %f, %f) = %f",
         $x, $y, $pg->x, $pg->y, calculateDistance($x, $y, $pg->x, $pg->y));
@@ -200,19 +201,24 @@ while ($pg->fetch())
         $p = $p->next;
     }
 
-    $p->distance = $distance;
-    $p->id       = $pg->id;
-    $p->name     = $pg->name;
-    $p->x        = $pg->x;
-    $p->y        = $pg->y;
+    $p->distance    = $distance;
+    $p->no_rounding = $no_rounding;
+    $p->id          = $pg->id;
+    $p->name        = $pg->name;
+    $p->x           = $pg->x;
+    $p->y           = $pg->y;
 
     if ($nearest == 0)
-        $nearest = $distance;
-    else if ($distance != 0 && $distance < $nearest)
-        $nearest = $distance;
+        $nearest = $no_rounding;
 
-    if ($distance != 0 && $distance > $farthest)
-        $farthest = $distance;
+    if ($farthest == 0)
+        $farthest = $no_rounding;
+
+    if ($no_rounding != 0 && $no_rounding < $nearest)
+        $nearest = $no_rounding;
+
+    if ($no_rounding != 0 && $no_rounding > $farthest)
+        $farthest = $no_rounding;
 
     $lib->debug1(__FILE__, __LINE__, "farthest: %.1f  nearest: %.1f", $farthest, $nearest);
 
@@ -328,15 +334,17 @@ $lib->debug1(__FILE__, __LINE__, "row_count = %d", $row_count);
                 <td colspan="4"><b>Nearest points at distance <?php printf("%.1f", $nearest); ?>:</b></td>
             </tr>
             <tr>
-                <td style="width:20%" align="center">ID</td>
-                <td style="width:20%" align="center">Name</td>
-                <td style="width:20%" align="center">X</td>
-                <td style="width:20%" align="center">Y</td>
+                <td style="width:10%" align="center">ID</td>
+                <td style="width:10%" align="center">Name</td>
+                <td style="width:10%" align="center">X</td>
+                <td style="width:10%" align="center">Y</td>
+                <td style="width:10%" align="center">Distance</td>
+                <td style="width:10%" align="right">No Rounding</td>
             </tr>
             <?php
             for ($p=$top; $p!=NULL; $p=$p->next)
             {
-                if ($p->distance != $nearest)
+                if ($p->no_rounding != $nearest)
                     continue;
 
                 printf("<tr>\n");
@@ -344,6 +352,8 @@ $lib->debug1(__FILE__, __LINE__, "row_count = %d", $row_count);
                 printf("<td><center>%s</center></td>", $p->name);
                 printf("<td><center>%d</center></td>", $p->x);
                 printf("<td><center>%d</center></td>", $p->y);
+                printf("<td><center>%.1f</center></td>", $p->distance);
+                printf("<td align='right'>%f</td>", $p->no_rounding);
                 printf("</tr>\n");
             }
             ?>
@@ -354,15 +364,17 @@ $lib->debug1(__FILE__, __LINE__, "row_count = %d", $row_count);
                 <td colspan="4"><b>Farthest points at distance <?php printf("%.1f", $farthest); ?>:</b></td>
             </tr>
             <tr>
-                <td style="width:20%" align="center">ID</td>
-                <td style="width:20%" align="center">Name</td>
-                <td style="width:20%" align="center">X</td>
-                <td style="width:20%" align="center">Y</td>
+                <td style="width:10%" align="center">ID</td>
+                <td style="width:10%" align="center">Name</td>
+                <td style="width:10%" align="center">X</td>
+                <td style="width:10%" align="center">Y</td>
+                <td style="width:10%" align="center">Distance</td>
+                <td style="width:10%" align="right">No Rounding</td>
             </tr>
             <?php
             for ($p=$top; $p!=NULL; $p=$p->next)
             {
-                if ($p->distance != $farthest)
+                if ($p->no_rounding != $farthest)
                     continue;
 
                 printf("<tr>\n");
@@ -370,6 +382,35 @@ $lib->debug1(__FILE__, __LINE__, "row_count = %d", $row_count);
                 printf("<td><center>%s</center></td>", $p->name);
                 printf("<td><center>%d</center></td>", $p->x);
                 printf("<td><center>%d</center></td>", $p->y);
+                printf("<td><center>%.1f</center></td>", $p->distance);
+                printf("<td align='right'>%f</td>", $p->no_rounding);
+                printf("</tr>\n");
+            }
+            ?>
+        </table>
+        <br>
+        <table>
+            <tr>
+                <td colspan="4"><b>TESTING:</b></td>
+            </tr>
+            <tr>
+                <td style="width:10%" align="center">ID</td>
+                <td style="width:10%" align="center">Name</td>
+                <td style="width:10%" align="center">X</td>
+                <td style="width:10%" align="center">Y</td>
+                <td style="width:10%" align="center">Distance</td>
+                <td style="width:10%" align="right">No Rounding</td>
+            </tr>
+            <?php
+            for ($p=$top; $p!=NULL; $p=$p->next)
+            {
+                printf("<tr>\n");
+                printf("<td><center>%d</center></td>", $p->id);
+                printf("<td><center>%s</center></td>", $p->name);
+                printf("<td><center>%d</center></td>", $p->x);
+                printf("<td><center>%d</center></td>", $p->y);
+                printf("<td><center>%.1f</center></td>", $p->distance);
+                printf("<td align='right'>%f</td>", $p->no_rounding);
                 printf("</tr>\n");
             }
             ?>
