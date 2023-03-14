@@ -1,5 +1,5 @@
 ==========================================================================================================================
-Debug file: ../debug//postgres.txt created on Mon, 13 Feb 2023 12:55:10 -0700. Mode: WRITE.
+Debug file: ../debug//postgres.txt created on Sat, 18 Feb 2023 20:58:15 -0700. Mode: WRITE.
 
 d1: library.php 0: 1910
 d1: library.php 0: 1914
@@ -20,7 +20,7 @@ from
   point 
 order by 
   name
-d1: postgres.php 320: Number of rows: 5
+d1: postgres.php 320: Number of rows: 4
 
 d1: postgres.php 323: is_select_statement = true
 r1: postgres.php 378: row
@@ -29,8 +29,10 @@ Array
     [id] => 24
     [name] => A
     [x] => 0
-    [y] => 1
+    [y] => 0
 )
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: x
 d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: x
@@ -50,9 +52,11 @@ Array
 (
     [id] => 25
     [name] => B
-    [x] => 1
-    [y] => 0
+    [x] => 48
+    [y] => 10
 )
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: x
 d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: x
@@ -72,9 +76,11 @@ Array
 (
     [id] => 26
     [name] => C
-    [x] => 1
-    [y] => 1
+    [x] => 95
+    [y] => 24
 )
+d1: postgres.php 122: postgres get: x
+d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: x
 d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: x
@@ -94,31 +100,11 @@ Array
 (
     [id] => 27
     [name] => D
-    [x] => 2
-    [y] => 2
+    [x] => 143
+    [y] => 34
 )
 d1: postgres.php 122: postgres get: x
 d1: postgres.php 122: postgres get: y
-d1: postgres.php 122: postgres get: x
-d1: postgres.php 122: postgres get: y
-d1: postgres.php 122: postgres get: x
-d1: postgres.php 122: postgres get: y
-d1: postgres.php 122: postgres get: x
-d1: postgres.php 122: postgres get: y
-d1: postgres.php 122: postgres get: x
-d1: postgres.php 122: postgres get: y
-d1: postgres.php 122: postgres get: id
-d1: postgres.php 122: postgres get: name
-d1: postgres.php 122: postgres get: x
-d1: postgres.php 122: postgres get: y
-r1: postgres.php 378: row
-Array
-(
-    [id] => 28
-    [name] => E
-    [x] => 3
-    [y] => 3
-)
 d1: postgres.php 122: postgres get: x
 d1: postgres.php 122: postgres get: y
 d1: postgres.php 122: postgres get: x

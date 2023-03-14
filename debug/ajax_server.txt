@@ -1,5 +1,5 @@
 ==========================================================================================================================
-Debug file: ../debug//ajax_server.txt created on Mon, 13 Feb 2023 12:55:07 -0700. Mode: WRITE.
+Debug file: ../debug//ajax_server.txt created on Sat, 18 Feb 2023 20:56:59 -0700. Mode: WRITE.
 
 r1: ajax_server.php 92: _REQUEST
 Array
@@ -53,7 +53,7 @@ Array
     [CONTEXT_DOCUMENT_ROOT] => /Users/gregparkin/www/visionlink.test/htdocs
     [SERVER_ADMIN] => you@example.com
     [SCRIPT_FILENAME] => /Users/gregparkin/www/visionlink.test/htdocs/ajax_server.php
-    [REMOTE_PORT] => 51098
+    [REMOTE_PORT] => 62661
     [GATEWAY_INTERFACE] => CGI/1.1
     [SERVER_PROTOCOL] => HTTP/1.1
     [REQUEST_METHOD] => GET
@@ -61,8 +61,8 @@ Array
     [REQUEST_URI] => /ajax_server.php?request=%7B%22limit%22%3A100%2C%22offset%22%3A0%2C%22action%22%3A%22all%22%7D
     [SCRIPT_NAME] => /ajax_server.php
     [PHP_SELF] => /ajax_server.php
-    [REQUEST_TIME_FLOAT] => 1676318107.4472
-    [REQUEST_TIME] => 1676318107
+    [REQUEST_TIME_FLOAT] => 1676779019.8501
+    [REQUEST_TIME] => 1676779019
 )
 r1: ajax_server.php 154: _SESSION
 Array
@@ -95,9 +95,8 @@ d1: ajax_server.php 160: FINAL: name =
 d1: ajax_server.php 161: FINAL: x = 0
 d1: ajax_server.php 162: FINAL: y = 0
 d1: ajax_server.php 290: In allRecords() method
-d1: ajax_server.php 324: SENDING: {"id":"24","name":"A","x":"0","y":"1"}
-d1: ajax_server.php 324: SENDING: {"id":"25","name":"B","x":"1","y":"0"}
-d1: ajax_server.php 324: SENDING: {"id":"26","name":"C","x":"1","y":"1"}
-d1: ajax_server.php 324: SENDING: {"id":"27","name":"D","x":"2","y":"2"}
-d1: ajax_server.php 324: SENDING: {"id":"28","name":"E","x":"3","y":"3"}
+d1: ajax_server.php 324: SENDING: {"id":"24","name":"A","x":"0","y":"0"}
+d1: ajax_server.php 324: SENDING: {"id":"25","name":"B","x":"48","y":"10"}
+d1: ajax_server.php 324: SENDING: {"id":"26","name":"C","x":"95","y":"24"}
+d1: ajax_server.php 324: SENDING: {"id":"27","name":"D","x":"143","y":"34"}
 d1: ajax_server.php 328: Exiting allRecords() function
