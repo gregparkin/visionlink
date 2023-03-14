@@ -1,5 +1,5 @@
 ==========================================================================================================================
-Debug file: ../debug//index.txt created on Mon, 13 Feb 2023 12:55:07 -0700. Mode: WRITE.
+Debug file: ../debug//index.txt created on Sat, 18 Feb 2023 20:56:59 -0700. Mode: WRITE.
 
 r1: index.php 12: _POST
 Array
@@ -21,7 +21,6 @@ Array
     [HTTP_UPGRADE_INSECURE_REQUESTS] => 1
     [HTTP_USER_AGENT] => Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/110.0.0.0 Safari/537.36
     [HTTP_ACCEPT] => text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
-    [HTTP_REFERER] => http://visionlink.test/edit_points.php?id=25&name=B&x=1&y=0
     [HTTP_ACCEPT_ENCODING] => gzip, deflate
     [HTTP_ACCEPT_LANGUAGE] => en-US,en;q=0.9
     [HTTP_COOKIE] => PHPSESSID=qig7b3fg719es37te0b43738qe
@@ -38,7 +37,7 @@ Array
     [CONTEXT_DOCUMENT_ROOT] => /Users/gregparkin/www/visionlink.test/htdocs
     [SERVER_ADMIN] => you@example.com
     [SCRIPT_FILENAME] => /Users/gregparkin/www/visionlink.test/htdocs/index.php
-    [REMOTE_PORT] => 51098
+    [REMOTE_PORT] => 62661
     [GATEWAY_INTERFACE] => CGI/1.1
     [SERVER_PROTOCOL] => HTTP/1.1
     [REQUEST_METHOD] => GET
@@ -46,8 +45,8 @@ Array
     [REQUEST_URI] => /
     [SCRIPT_NAME] => /index.php
     [PHP_SELF] => /index.php
-    [REQUEST_TIME_FLOAT] => 1676318107.1238
-    [REQUEST_TIME] => 1676318107
+    [REQUEST_TIME_FLOAT] => 1676779019.4233
+    [REQUEST_TIME] => 1676779019
 )
 r1: index.php 16: _SESSION
 Array
